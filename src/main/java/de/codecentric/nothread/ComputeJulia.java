@@ -5,7 +5,6 @@
  */
 package de.codecentric.nothread;
 
-import de.codecentric.common.ImageDimension;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -20,15 +19,23 @@ import org.apache.commons.math3.complex.Complex;
  *
  * @author Andreas Christ <andreas.christ@codecentric.de>
  */
-public class ComputeJulia {
+public class ComputeJulia implements ComputeFractal {
 
     private static final Logger LOGGER = Logger.getLogger(ComputeJulia.class.getName());
 
-    private static final Complex min = new Complex(-0.858, -0.605);
-    private static final Complex max = new Complex(0.168, 0.370);
+    private static Complex min;
+    private static Complex max;
 
-    static void berechne(int[] bild, ImageDimension dimension) {
-        Callable<int[]> callable = new ComputeCallable(bild, dimension);
+    ComputeJulia(Complex min, Complex max) {
+        ComputeJulia.min = min;
+        ComputeJulia.max = max;
+    }
+
+    //private static final Complex min = new Complex(-0.858, -0.605);
+    //private static final Complex max = new Complex(0.168, 0.370);
+    @Override
+    public void berechne(int[] bild, Integer width, Integer height) {
+        Callable<int[]> callable = new ComputeCallable(bild, width, height);
         ExecutorService executor = Executors.newCachedThreadPool();
         Future<int[]> result = executor.submit(callable);
 
@@ -42,15 +49,18 @@ public class ComputeJulia {
     private static class ComputeCallable implements Callable<int[]> {
 
         final int[] bild;
-        final ImageDimension dimension;
 
         Complex z;
 
         private final Complex c;
 
-        ComputeCallable(int[] bild, ImageDimension dimension) {
+        private final int width;
+        private final int height;
+
+        ComputeCallable(int[] bild, int width, int height) {
             this.bild = bild;
-            this.dimension = dimension;
+            this.width = width;
+            this.height = height;
 
             //c = new Complex(-0.74543, +0.11301);
             c = new Complex(-1.26, 0);
@@ -58,18 +68,18 @@ public class ComputeJulia {
 
         @Override
         public int[] call() throws Exception {
-            double spaltenBreite = (max.getReal() - min.getReal()) / dimension.getWidth();
-            double spaltenHöhe = (max.getImaginary() - min.getImaginary()) / dimension.getHeight();
+            double spaltenBreite = (max.getReal() - min.getReal()) / width;
+            double spaltenHöhe = (max.getImaginary() - min.getImaginary()) / height;
 
-            for (int m = 0; m < dimension.getHeight(); m++) {
+            for (int m = 0; m < height; m++) {
                 double im = min.getImaginary() + m * spaltenHöhe;
 
-                for (int n = 0; n < dimension.getWidth(); n++) {
+                for (int n = 0; n < width; n++) {
                     double re = min.getReal() + n * spaltenBreite;
 
                     z = new Complex(re, im);
 
-                    bild[m * dimension.getWidth() + n] = FractalIterator.iterate(z, c);
+                    bild[m * width + n] = FractalIterator.iterate(z, c);
                 }
             }
             return bild;

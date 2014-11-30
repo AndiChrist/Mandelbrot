@@ -28,12 +28,6 @@ public class Picture extends JPanel {
         this.image = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
     }
 
-    public Picture(ImageDimension dimension) {
-        this.x = dimension.getWidth();
-        this.y = dimension.getHeight();
-        this.image = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         if (image != null) {

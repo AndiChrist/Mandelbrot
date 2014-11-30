@@ -5,7 +5,6 @@
  */
 package de.codecentric.nothread;
 
-import de.codecentric.common.ImageDimension;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -20,16 +19,22 @@ import org.apache.commons.math3.complex.Complex;
  *
  * @author Andreas Christ <andreas.christ@codecentric.de>
  */
-public class ComputeMandelbrot {
+public class ComputeMandelbrot implements ComputeFractal {
 
     private final static Logger LOGGER = Logger.getLogger(ComputeMandelbrot.class.getName());
 
-    private static final Complex min = new Complex(-2.0, -1.25);
-    private static final Complex max = new Complex(0.5, 1.25);
+    private static Complex min;
+    private static Complex max;
 
-    static void berechne(int[] bild, ImageDimension dimension) {
+    ComputeMandelbrot(Complex min, Complex max) {
+        ComputeMandelbrot.min = min;
+        ComputeMandelbrot.max = max;
+    }
 
-        Callable<int[]> callable = new ComputeCallable(bild, dimension);
+    @Override
+    public void berechne(int[] bild, Integer width, Integer height) {
+
+        Callable<int[]> callable = new ComputeCallable(bild, width, height);
         ExecutorService executor = Executors.newCachedThreadPool();
         Future<int[]> result = executor.submit(callable);
 
@@ -44,30 +49,33 @@ public class ComputeMandelbrot {
 
         final int[] bild;
 
-        ImageDimension dimension;
+        private final int width;
+        private final int height;
+
         Complex c;
         Complex z;
 
-        ComputeCallable(int[] bild, ImageDimension dimension) {
+        ComputeCallable(int[] bild, int width, int height) {
             this.bild = bild;
-            this.dimension = dimension;
+            this.width = width;
+            this.height = height;
         }
 
         @Override
         public int[] call() throws Exception {
-            double spaltenBreite = (max.getReal() - min.getReal()) / dimension.getWidth();
-            double spaltenHöhe = (max.getImaginary() - min.getImaginary()) / dimension.getHeight();
+            double spaltenBreite = (max.getReal() - min.getReal()) / this.width;
+            double spaltenHöhe = (max.getImaginary() - min.getImaginary()) / this.height;
 
-            for (int m = 0; m < dimension.getHeight(); m++) {
+            for (int m = 0; m < this.height; m++) {
                 double im = min.getImaginary() + m * spaltenHöhe;
 
-                for (int n = 0; n < dimension.getWidth(); n++) {
+                for (int n = 0; n < this.width; n++) {
                     double re = min.getReal() + n * spaltenBreite;
 
                     c = new Complex(re, im);
                     z = Complex.ZERO;
 
-                    bild[m * dimension.getWidth() + n] = FractalIterator.iterate(z, c);
+                    bild[m * this.width + n] = FractalIterator.iterate(z, c);
                 }
             }
             return bild;

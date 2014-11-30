@@ -5,7 +5,6 @@
  */
 package de.codecentric.nothread;
 
-import de.codecentric.common.ImageDimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -21,12 +20,12 @@ public class MandelPanel extends JPanel {
 
     private static Image image;
 
-    public void zeige(int[] bild, ImageDimension dimension) {
-        JFrame f = new JFrame("Mandelbrot " + dimension.getWidth() + "x" + dimension.getHeight());
+    void zeige(int[] bild, Integer width, Integer height) {
+        JFrame f = new JFrame("Mandelbrot " + width + "x" + height);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        image = getImageFromArray(bild, dimension);
+        image = getImageFromArray(bild, width, height);
         f.add(this);
-        f.setSize(dimension.getWidth(), dimension.getHeight());
+        f.setSize(width, height);
         f.setVisible(true);
     }
 
@@ -35,10 +34,6 @@ public class MandelPanel extends JPanel {
         if (image != null) {
             g.drawImage(image, 0, 0, image.getWidth(this), image.getHeight(this), this);
         }
-    }
-
-    public Image getImageFromArray(int[] pixels, ImageDimension dimension) {
-        return getImageFromArray(pixels, dimension.getWidth(), dimension.getHeight());
     }
 
     public Image getImageFromArray(int[] pixels, int width, int height) {

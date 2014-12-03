@@ -31,6 +31,7 @@ public class MandelPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         if (image != null) {
             g.drawImage(image, 0, 0, image.getWidth(this), image.getHeight(this), this);
         }

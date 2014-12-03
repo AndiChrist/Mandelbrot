@@ -48,13 +48,13 @@ public class ColorJulia {
 
         Complex c = new Complex(real, imag);            // c = a + ib
 
-        double xmin = -2.0;
-        double ymin = -2.0;
-        double width = 4.0;
-        double height = 4.0;
+        double xmin = -1.8;
+        double ymin = -1.8;
+        double width = 3.6;
+        double height = 3.6;
 
         int N = 512;
-        int ITERS = 256;
+        int ITERS = 100;
 
         Picture pic = new Picture(N, N);
 
@@ -69,7 +69,7 @@ public class ColorJulia {
                 //pic.set(i, j, ColorMap.getColor(t));
             }
         }
-        pic.show();
+        pic.display();
     }
 
 }

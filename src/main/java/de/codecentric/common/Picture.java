@@ -19,25 +19,20 @@ public class Picture extends JPanel {
 
     private final BufferedImage image;
 
-    int x;
-    int y;
-
     public Picture(int x, int y) {
-        this.x = x;
-        this.y = y;
         this.image = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         if (image != null) {
-            g.drawImage(image, 0, 0, this.x, this.y, this);
+            g.drawImage(image, 0, 0, null); // see javadoc for more info on the parameters
         }
     }
 
-    @Override
-    public void show() {
-        JFrame f = new JFrame("Mandelbrot " + this.x + "x" + this.y);
+    public void display() {
+        JFrame f = new JFrame("Mandelbrot " + image.getWidth() + "x" + image.getHeight());
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.add(this);
         f.setSize(image.getWidth(), image.getHeight());

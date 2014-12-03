@@ -64,7 +64,7 @@ public class ColorMandelbrot {
             }
         }
 
-        pic.show();
+        pic.display();
     }
 
 }

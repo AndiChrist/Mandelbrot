@@ -20,10 +20,13 @@ public class Fraktal {
     private final static Logger LOGGER = Logger.getLogger(Fraktal.class.getName());
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        Properties prop = new Properties();
-        prop.load(Fraktal.class.getClassLoader().getResourceAsStream("fraktal.properties"));
+        Properties typeProp = new Properties();
+        typeProp.load(Fraktal.class.getClassLoader().getResourceAsStream("fraktal.properties"));
 
-        String type = prop.getProperty("type");
+        String type = typeProp.getProperty("type");
+
+        Properties prop = new Properties();
+        prop.load(Fraktal.class.getClassLoader().getResourceAsStream(type + ".properties"));
 
         Double minRe = Double.valueOf(prop.getProperty("min.re"));
         Double minIm = Double.valueOf(prop.getProperty("min.im"));
@@ -43,10 +46,10 @@ public class Fraktal {
 
         ComputeFractal fractal = null;
         switch (type) {
-            case "Mandelbrot":
+            case "mandelbrot":
                 fractal = new ComputeMandelbrot(min, max);
                 break;
-            case "Julia":
+            case "julia":
                 fractal = new ComputeJulia(min, max);
                 break;
         }

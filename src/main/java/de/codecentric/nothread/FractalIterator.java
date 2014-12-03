@@ -18,7 +18,7 @@ public class FractalIterator {
     private static final Logger LOGGER = Logger.getLogger(FractalIterator.class.getName());
 
     final static double MAX_INFINITY = 2.0;
-    final static int MAX_ITERATION_STEPS = 30;//100;
+    final static int MAX_ITERATION_STEPS = 100;
 
     public static int iterate(Complex z, Complex c) {
         return iterate(z, c, MAX_ITERATION_STEPS);

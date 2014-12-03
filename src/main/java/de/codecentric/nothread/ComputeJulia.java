@@ -62,8 +62,7 @@ public class ComputeJulia implements ComputeFractal {
             this.width = width;
             this.height = height;
 
-            //c = new Complex(-0.74543, +0.11301);
-            c = new Complex(-1.26, 0);
+            c = new Complex(-0.74543, +0.11301);
         }
 
         @Override

@@ -7,8 +7,7 @@ package de.codecentric.nothread;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.MemoryImageSource;
+import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -20,12 +19,12 @@ public class MandelPanel extends JPanel {
 
     private static Image image;
 
-    void zeige(int[] bild, Integer width, Integer height) {
-        JFrame f = new JFrame("Mandelbrot " + width + "x" + height);
+    void zeige(BufferedImage image) {
+        this.image = image;
+        JFrame f = new JFrame("Mandelbrot " + image.getWidth() + "x" + image.getHeight());
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        image = getImageFromArray(bild, width, height);
         f.add(this);
-        f.setSize(width, height);
+        f.setSize(image.getWidth(), image.getHeight());
         f.setVisible(true);
     }
 
@@ -35,11 +34,6 @@ public class MandelPanel extends JPanel {
         if (image != null) {
             g.drawImage(image, 0, 0, image.getWidth(this), image.getHeight(this), this);
         }
-    }
-
-    public Image getImageFromArray(int[] pixels, int width, int height) {
-        MemoryImageSource mis = new MemoryImageSource(width, height, pixels, 0, width);
-        return Toolkit.getDefaultToolkit().createImage(mis);
     }
 
 }

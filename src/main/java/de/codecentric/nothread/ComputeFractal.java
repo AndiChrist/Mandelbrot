@@ -5,12 +5,14 @@
  */
 package de.codecentric.nothread;
 
+import java.awt.image.BufferedImage;
+
 /**
  *
  * @author Andreas Christ <andreas.christ@codecentric.de>
  */
 public interface ComputeFractal {
 
-    public void berechne(int[] bild, Integer width, Integer height);
+    public void berechne(BufferedImage image);
 
 }

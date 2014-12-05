@@ -5,6 +5,7 @@
  */
 package de.codecentric.nothread;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -32,50 +33,43 @@ public class ComputeMandelbrot implements ComputeFractal {
     }
 
     @Override
-    public void berechne(int[] bild, Integer width, Integer height) {
+    public void berechne(BufferedImage image) {
 
-        Callable<int[]> callable = new ComputeCallable(bild, width, height);
+        Callable<BufferedImage> callable = new ComputeCallable(image);
         ExecutorService executor = Executors.newCachedThreadPool();
-        Future<int[]> result = executor.submit(callable);
+        Future<BufferedImage> result = executor.submit(callable);
 
         try {
-            bild = result.get();
+            image = result.get();
         } catch (InterruptedException | ExecutionException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
-    private static class ComputeCallable implements Callable<int[]> {
+    private static class ComputeCallable implements Callable<BufferedImage> {
 
-        final int[] bild;
-
-        private final int width;
-        private final int height;
+        final BufferedImage bild;
 
         Complex c;
-        Complex z;
 
-        ComputeCallable(int[] bild, int width, int height) {
+        ComputeCallable(BufferedImage bild) {
             this.bild = bild;
-            this.width = width;
-            this.height = height;
         }
 
         @Override
-        public int[] call() throws Exception {
-            double spaltenBreite = (max.getReal() - min.getReal()) / this.width;
-            double spaltenHöhe = (max.getImaginary() - min.getImaginary()) / this.height;
+        public BufferedImage call() throws Exception {
+            double spaltenBreite = (max.getReal() - min.getReal()) / bild.getWidth();
+            double spaltenHöhe = (max.getImaginary() - min.getImaginary()) / bild.getHeight();
 
-            for (int m = 0; m < this.height; m++) {
+            for (int m = 0; m < bild.getHeight(); m++) {
                 double im = min.getImaginary() + m * spaltenHöhe;
 
-                for (int n = 0; n < this.width; n++) {
+                for (int n = 0; n < bild.getWidth(); n++) {
                     double re = min.getReal() + n * spaltenBreite;
 
                     c = new Complex(re, im);
-                    z = Complex.ZERO;
 
-                    bild[m * this.width + n] = FractalIterator.iterate(z, c);
+                    bild.setRGB(n, m, FractalIterator.iterate(Complex.ZERO, c));
                 }
             }
             return bild;

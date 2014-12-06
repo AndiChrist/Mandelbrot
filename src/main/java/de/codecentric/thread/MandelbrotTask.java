@@ -6,6 +6,7 @@
 package de.codecentric.thread;
 
 import de.codecentric.common.ColorManager;
+import de.codecentric.nothread.FractalIterator;
 import java.awt.image.BufferedImage;
 import static java.util.concurrent.ForkJoinTask.invokeAll;
 import java.util.concurrent.RecursiveAction;
@@ -42,14 +43,8 @@ public class MandelbrotTask extends RecursiveAction {
                 Complex c = new Complex(re, im);
                 Complex z = Complex.ZERO;
 
-                int iter = 0;
-
-                do {
-                    z = z.multiply(z).add(c);
-                    iter++;
-                } while (z.abs() <= thresholdSq && iter < maxIterations);
-
-                image.setRGB(x, y, ColorManager.HSBtoRGB(iter, maxIterations));
+                int i = FractalIterator.iterate(z, c, maxIterations, thresholdSq);
+                image.setRGB(x, y, ColorManager.HSBtoRGB(i, maxIterations));
             }
         }
     }

@@ -27,7 +27,7 @@ public class Picture extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (image != null) {
-            g.drawImage(image, 0, 0, null); // see javadoc for more info on the parameters
+            g.drawImage(image, 0, 0, null);
         }
     }
 
@@ -37,9 +37,6 @@ public class Picture extends JPanel {
         f.add(this);
         f.setSize(image.getWidth(), image.getHeight());
         f.setVisible(true);
-
-        this.setSize(this.image.getHeight(), this.image.getWidth());
-        this.setVisible(true);
     }
 
     public void set(int x, int y, Color color) {

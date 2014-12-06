@@ -65,8 +65,7 @@ public class ColorJulia {
                 Complex z = new Complex(x, y);
                 int t = julia(c, z, ITERS);
 
-                pic.set(i, N - 1 - j, Color.HSBtoRGB(0.5f * t / ITERS, 1.0f, 1.0f));
-                //pic.set(i, j, ColorMap.getColor(t));
+                pic.setRGB(i, N - 1 - j, Color.HSBtoRGB(0.5f * t / ITERS, 1.0f, 1.0f));
             }
         }
         pic.display();

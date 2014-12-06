@@ -5,6 +5,7 @@
  */
 package de.codecentric.nothread;
 
+import de.codecentric.common.Picture;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -40,9 +41,7 @@ public class Fraktal {
         Integer width = Integer.valueOf(prop.getProperty("image.width"));
         Integer height = Integer.valueOf(prop.getProperty("image.height"));
 
-        MandelPanel panel = new MandelPanel();
-
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         ComputeFractal fractal = null;
         switch (type) {
@@ -58,7 +57,8 @@ public class Fraktal {
             fractal.compute(image);
         }
 
-        panel.display(image);
+        Picture pic = new Picture(image);
+        pic.display();
     }
 
 }

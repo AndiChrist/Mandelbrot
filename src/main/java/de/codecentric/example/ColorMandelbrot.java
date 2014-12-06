@@ -50,7 +50,7 @@ public class ColorMandelbrot {
         int ITERS = 256;
 
         // compute Mandelbrot set
-        Picture pic = new Picture(N, N);
+        Picture panel = new Picture(N, N);
 
         for (int i = 0; i < N; i++) {
             double x = xc - size / 2 + size * i / N;
@@ -58,12 +58,12 @@ public class ColorMandelbrot {
                 double y = yc - size / 2 + size * j / N;
                 Complex z0 = new Complex(x, y);
                 int t = mand(z0, ITERS - 1);
-                pic.set(i, N - 1 - j, ColorManager.HSBtoRGB(t, ITERS));
+                panel.setRGB(i, N - 1 - j, ColorManager.HSBtoRGB(t, ITERS));
 
             }
         }
 
-        pic.display();
+        panel.display();
     }
 
 }

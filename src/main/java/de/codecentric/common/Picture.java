@@ -23,27 +23,32 @@ public class Picture extends JPanel {
         this.image = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
     }
 
+    public Picture(BufferedImage image) {
+        this.image = image;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+        super.paintComponent(g); // erase what's maybe left behind
         if (image != null) {
             g.drawImage(image, 0, 0, null);
         }
     }
 
     public void display() {
-        JFrame f = new JFrame("Mandelbrot " + image.getWidth() + "x" + image.getHeight());
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.add(this);
+        JFrame f = new JFrame();
         f.setSize(image.getWidth(), image.getHeight());
+        f.setTitle("Mandelbrot " + image.getWidth() + "x" + image.getHeight());
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setContentPane(this);
         f.setVisible(true);
     }
 
-    public void set(int x, int y, Color color) {
+    public void setRGB(int x, int y, Color color) {
         image.setRGB(x, y, color.getRGB());
     }
 
-    public void set(int x, int y, int color) {
+    public void setRGB(int x, int y, int color) {
         image.setRGB(x, y, color);
     }
 }

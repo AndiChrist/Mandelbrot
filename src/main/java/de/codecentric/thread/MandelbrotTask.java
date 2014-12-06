@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.codecentric.learning;
+package de.codecentric.thread;
 
-import java.awt.Color;
+import de.codecentric.common.ColorManager;
 import java.awt.image.BufferedImage;
 import static java.util.concurrent.ForkJoinTask.invokeAll;
 import java.util.concurrent.RecursiveAction;
@@ -49,7 +49,7 @@ public class MandelbrotTask extends RecursiveAction {
                     iter++;
                 } while (z.abs() <= thresholdSq && iter < maxIterations);
 
-                image.setRGB(x, y, Color.HSBtoRGB(0.5f * iter / maxIterations, 1.0f, 1.0f));
+                image.setRGB(x, y, ColorManager.HSBtoRGB(iter, maxIterations));
             }
         }
     }

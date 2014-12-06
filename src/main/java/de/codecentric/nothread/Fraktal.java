@@ -50,22 +50,19 @@ public class Fraktal {
     private BufferedImage computeFractal() {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
-        ComputeFractal fractal = null;
+        FraktalStrategy strategy = new FraktalStrategy();
         switch (this.type) {
             case "mandelbrot":
-                fractal = new ComputeMandelbrot(min, max);
+                strategy.setStrategy(new ComputeMandelbrot(min, max));
                 break;
             case "julia":
-                fractal = new ComputeJulia(min, max);
+                strategy.setStrategy(new ComputeJulia(min, max));
                 break;
         }
 
-        if (fractal != null) {
-            fractal.setInfinity(infinity);
-            fractal.setIteration(iteration);
-
-            fractal.compute(image);
-        }
+        strategy.setInfinity(infinity);
+        strategy.setIteration(iteration);
+        strategy.compute(image);
 
         return image;
     }

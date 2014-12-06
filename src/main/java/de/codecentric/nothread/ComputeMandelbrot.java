@@ -25,11 +25,11 @@ public class ComputeMandelbrot implements ComputeFractal {
 
     private final static Logger LOGGER = Logger.getLogger(ComputeMandelbrot.class.getName());
 
-    static Complex min = null;
-    static Complex max = null;
+    static Complex min;
+    static Complex max;
 
-    static double infinity = 0.0d;
-    static int iteration = 0;
+    static double infinity;
+    static int iteration;
 
     ComputeMandelbrot(Complex min, Complex max) {
         ComputeMandelbrot.min = min;

@@ -25,19 +25,17 @@ public class ComputeJulia implements ComputeFractal {
 
     private static final Logger LOGGER = Logger.getLogger(ComputeJulia.class.getName());
 
-    static Complex min = null;
-    static Complex max = null;
+    static Complex min;
+    static Complex max;
 
-    static double infinity = 0.0d;
-    static int iteration = 0;
+    static double infinity;
+    static int iteration;
 
     ComputeJulia(Complex min, Complex max) {
         ComputeJulia.min = min;
         ComputeJulia.max = max;
     }
 
-    //private static final Complex min = new Complex(-0.858, -0.605);
-    //private static final Complex max = new Complex(0.168, 0.370);
     @Override
     public void compute(BufferedImage bild) {
         Callable<BufferedImage> callable = new ComputeCallable(bild);
@@ -86,7 +84,6 @@ public class ComputeJulia implements ComputeFractal {
 
                     z = new Complex(re, im);
 
-                    //bild.setRGB(n, m, FractalIterator.iterate(z, c));
                     int i = FractalIterator.iterate(z, c, iteration, infinity);
                     bild.setRGB(n, m, ColorManager.HSBtoRGB(i, iteration));
 

@@ -33,7 +33,7 @@ public class ComputeMandelbrot implements ComputeFractal {
     }
 
     @Override
-    public void berechne(BufferedImage image) {
+    public void compute(BufferedImage image) {
 
         Callable<BufferedImage> callable = new ComputeCallable(image);
         ExecutorService executor = Executors.newCachedThreadPool();

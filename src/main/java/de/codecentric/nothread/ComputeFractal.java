@@ -13,6 +13,6 @@ import java.awt.image.BufferedImage;
  */
 public interface ComputeFractal {
 
-    public void berechne(BufferedImage image);
+    public void compute(BufferedImage image);
 
 }

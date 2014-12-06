@@ -17,9 +17,9 @@ import javax.swing.JPanel;
  */
 public class MandelPanel extends JPanel {
 
-    private static Image image;
+    Image image;
 
-    void zeige(BufferedImage image) {
+    void display(BufferedImage image) {
         this.image = image;
         JFrame f = new JFrame("Mandelbrot " + image.getWidth() + "x" + image.getHeight());
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

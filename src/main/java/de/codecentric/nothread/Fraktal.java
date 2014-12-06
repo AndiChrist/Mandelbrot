@@ -55,10 +55,10 @@ public class Fraktal {
         }
 
         if (fractal != null) {
-            fractal.berechne(image);
+            fractal.compute(image);
         }
 
-        panel.zeige(image);
+        panel.display(image);
     }
 
 }

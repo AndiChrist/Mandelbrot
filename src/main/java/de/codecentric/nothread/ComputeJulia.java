@@ -35,7 +35,7 @@ public class ComputeJulia implements ComputeFractal {
     //private static final Complex min = new Complex(-0.858, -0.605);
     //private static final Complex max = new Complex(0.168, 0.370);
     @Override
-    public void berechne(BufferedImage bild) {
+    public void compute(BufferedImage bild) {
         Callable<BufferedImage> callable = new ComputeCallable(bild);
         ExecutorService executor = Executors.newCachedThreadPool();
         Future<BufferedImage> result = executor.submit(callable);

@@ -15,4 +15,8 @@ public interface ComputeFractal {
 
     public void compute(BufferedImage image);
 
+    public void setInfinity(Double infinity);
+
+    public void setIteration(Integer iteration);
+
 }

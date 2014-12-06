@@ -5,7 +5,6 @@
  */
 package de.codecentric.nothread;
 
-import de.codecentric.common.ColorManager;
 import java.util.logging.Logger;
 import org.apache.commons.math3.complex.Complex;
 
@@ -17,18 +16,6 @@ public class FractalIterator {
 
     private static final Logger LOGGER = Logger.getLogger(FractalIterator.class.getName());
 
-    final static double MAX_INFINITY = 2.0;
-    final static int MAX_ITERATION_STEPS = 100;
-
-    public static int iterate(Complex z, Complex c) {
-        return iterate(z, c, MAX_ITERATION_STEPS);
-    }
-
-    public static int iterate(Complex z, Complex c, int maxIterationSteps) {
-        return iterate(z, c, maxIterationSteps, MAX_INFINITY);
-
-    }
-
     public static int iterate(Complex z, Complex c, int maxIterationSteps, double maxInfinity) {
         int i = 0;
 
@@ -36,7 +23,7 @@ public class FractalIterator {
             z = z.multiply(z).add(c);
         }
 
-        return ColorManager.HSBtoRGB(i, maxIterationSteps);
+        return i;//ColorManager.HSBtoRGB(i, maxIterationSteps);
 
     }
 

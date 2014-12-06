@@ -22,29 +22,36 @@ public class Fraktal {
     private final static Logger LOGGER = Logger.getLogger(Fraktal.class.getName());
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
+        Fraktal fraktal = new Fraktal();
+
         Properties typeProp = new Properties();
         typeProp.load(Fraktal.class.getClassLoader().getResourceAsStream("fraktal.properties"));
 
         String type = typeProp.getProperty("type");
+        fraktal.setType(type);
 
         Properties prop = new Properties();
         prop.load(Fraktal.class.getClassLoader().getResourceAsStream(type + ".properties"));
 
-        Double minRe = Double.valueOf(prop.getProperty("min.re"));
-        Double minIm = Double.valueOf(prop.getProperty("min.im"));
-        Complex min = new Complex(minRe, minIm);
+        fraktal.setMin(readProp(prop, "min.re", "min.im"));
+        fraktal.setMax(readProp(prop, "max.re", "max.im"));
 
-        Double maxRe = Double.valueOf(prop.getProperty("max.re"));
-        Double maxIm = Double.valueOf(prop.getProperty("max.im"));
-        Complex max = new Complex(maxRe, maxIm);
+        fraktal.setWidth(Integer.valueOf(prop.getProperty("image.width")));
+        fraktal.setHeight(Integer.valueOf(prop.getProperty("image.height")));
 
-        Integer width = Integer.valueOf(prop.getProperty("image.width"));
-        Integer height = Integer.valueOf(prop.getProperty("image.height"));
+        fraktal.setInfinity(Double.parseDouble(prop.getProperty("infinity")));
+        fraktal.setIteration(Integer.valueOf(prop.getProperty("max.iteration")));
 
+        BufferedImage image = fraktal.computeFractal();
+        new PicturePanel(image).display();
+
+    }
+
+    private BufferedImage computeFractal() {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         ComputeFractal fractal = null;
-        switch (type) {
+        switch (this.type) {
             case "mandelbrot":
                 fractal = new ComputeMandelbrot(min, max);
                 break;
@@ -54,10 +61,55 @@ public class Fraktal {
         }
 
         if (fractal != null) {
+            fractal.setInfinity(infinity);
+            fractal.setIteration(iteration);
+
             fractal.compute(image);
         }
 
-        new PicturePanel(image).display();
+        return image;
+    }
+
+    private static Complex readProp(Properties prop, String re, String im) {
+        Double minRe = Double.valueOf(prop.getProperty(re));
+        Double minIm = Double.valueOf(prop.getProperty(im));
+        return new Complex(minRe, minIm);
+    }
+
+    private String type;
+    private Complex min;
+    private int width;
+    private Complex max;
+    private int height;
+    private double infinity;
+    private int iteration;
+
+    private void setType(String type) {
+        this.type = type;
+    }
+
+    private void setMin(Complex min) {
+        this.min = min;
+    }
+
+    private void setMax(Complex max) {
+        this.max = max;
+    }
+
+    private void setWidth(int width) {
+        this.width = width;
+    }
+
+    private void setHeight(int height) {
+        this.height = height;
+    }
+
+    private void setInfinity(double infinity) {
+        this.infinity = infinity;
+    }
+
+    private void setIteration(int iteration) {
+        this.iteration = iteration;
     }
 
 }

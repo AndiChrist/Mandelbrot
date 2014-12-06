@@ -5,6 +5,7 @@
  */
 package de.codecentric.nothread;
 
+import de.codecentric.common.ColorManager;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -24,8 +25,11 @@ public class ComputeMandelbrot implements ComputeFractal {
 
     private final static Logger LOGGER = Logger.getLogger(ComputeMandelbrot.class.getName());
 
-    private static Complex min;
-    private static Complex max;
+    static Complex min = null;
+    static Complex max = null;
+
+    static double infinity = 0.0d;
+    static int iteration = 0;
 
     ComputeMandelbrot(Complex min, Complex max) {
         ComputeMandelbrot.min = min;
@@ -44,6 +48,16 @@ public class ComputeMandelbrot implements ComputeFractal {
         } catch (InterruptedException | ExecutionException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public void setInfinity(Double infinity) {
+        ComputeMandelbrot.infinity = infinity;
+    }
+
+    @Override
+    public void setIteration(Integer iteration) {
+        ComputeMandelbrot.iteration = iteration;
     }
 
     private static class ComputeCallable implements Callable<BufferedImage> {
@@ -69,7 +83,8 @@ public class ComputeMandelbrot implements ComputeFractal {
 
                     c = new Complex(re, im);
 
-                    bild.setRGB(n, m, FractalIterator.iterate(Complex.ZERO, c));
+                    int i = FractalIterator.iterate(Complex.ZERO, c, iteration, infinity);
+                    bild.setRGB(n, m, ColorManager.HSBtoRGB(i, iteration));
                 }
             }
             return bild;

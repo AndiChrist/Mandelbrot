@@ -5,6 +5,7 @@
  */
 package de.codecentric.nothread;
 
+import de.codecentric.common.ColorManager;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -24,8 +25,11 @@ public class ComputeJulia implements ComputeFractal {
 
     private static final Logger LOGGER = Logger.getLogger(ComputeJulia.class.getName());
 
-    private static Complex min;
-    private static Complex max;
+    static Complex min = null;
+    static Complex max = null;
+
+    static double infinity = 0.0d;
+    static int iteration = 0;
 
     ComputeJulia(Complex min, Complex max) {
         ComputeJulia.min = min;
@@ -45,6 +49,16 @@ public class ComputeJulia implements ComputeFractal {
         } catch (InterruptedException | ExecutionException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public void setInfinity(Double infinity) {
+        ComputeJulia.infinity = infinity;
+    }
+
+    @Override
+    public void setIteration(Integer iteration) {
+        ComputeJulia.iteration = iteration;
     }
 
     private static class ComputeCallable implements Callable<BufferedImage> {
@@ -72,7 +86,10 @@ public class ComputeJulia implements ComputeFractal {
 
                     z = new Complex(re, im);
 
-                    bild.setRGB(n, m, FractalIterator.iterate(z, c));
+                    //bild.setRGB(n, m, FractalIterator.iterate(z, c));
+                    int i = FractalIterator.iterate(z, c, iteration, infinity);
+                    bild.setRGB(n, m, ColorManager.HSBtoRGB(i, iteration));
+
                 }
             }
             return bild;

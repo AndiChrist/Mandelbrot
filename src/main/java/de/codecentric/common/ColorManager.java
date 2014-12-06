@@ -5,7 +5,6 @@
  */
 package de.codecentric.common;
 
-import de.codecentric.example.ColorMap;
 import java.awt.Color;
 import org.apache.commons.math3.complex.Complex;
 

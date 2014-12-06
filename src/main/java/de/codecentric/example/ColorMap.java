@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class ColorMap {
 
-    private static List<Color> colors; // = new ArrayList<>();
+    private static final List<Color> colors; // = new ArrayList<>();
 
     static public Color getColor(int t) {
         return colors.get(t);

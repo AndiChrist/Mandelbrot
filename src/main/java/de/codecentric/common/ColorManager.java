@@ -5,6 +5,7 @@
  */
 package de.codecentric.common;
 
+import de.codecentric.example.ColorMap;
 import java.awt.Color;
 import org.apache.commons.math3.complex.Complex;
 
@@ -13,6 +14,10 @@ import org.apache.commons.math3.complex.Complex;
  * @author Andreas Christ <andreas.christ@codecentric.de>
  */
 public class ColorManager {
+
+    public static int getMap(int i) {
+        return ColorMap.getColor(i).getRGB();
+    }
 
     public static int HSBtoRGB(int i, int maxIterationSteps) {
         return Color.HSBtoRGB(0.5f * i / maxIterationSteps, 1.0f, 1.0f);

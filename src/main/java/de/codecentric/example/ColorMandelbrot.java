@@ -21,8 +21,8 @@ package de.codecentric.example;
  * 0.10259 -0.641 0.0086 0.0086
  * ***********************************************************************
  */
+import de.codecentric.common.ColorManager;
 import de.codecentric.common.Picture;
-import java.awt.Color;
 import java.io.IOException;
 import org.apache.commons.math3.complex.Complex;
 
@@ -58,8 +58,7 @@ public class ColorMandelbrot {
                 double y = yc - size / 2 + size * j / N;
                 Complex z0 = new Complex(x, y);
                 int t = mand(z0, ITERS - 1);
-                pic.set(i, N - 1 - j, Color.HSBtoRGB(0.5f * t / ITERS, 1.0f, 1.0f));
-                //pic.set(i, j, ColorMap.getColor(t));
+                pic.set(i, N - 1 - j, ColorManager.HSBtoRGB(t, ITERS));
 
             }
         }

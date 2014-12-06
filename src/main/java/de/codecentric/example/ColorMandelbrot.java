@@ -22,7 +22,8 @@ package de.codecentric.example;
  * ***********************************************************************
  */
 import de.codecentric.common.ColorManager;
-import de.codecentric.common.Picture;
+import de.codecentric.common.PicturePanel;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import org.apache.commons.math3.complex.Complex;
 
@@ -49,21 +50,21 @@ public class ColorMandelbrot {
 
         int ITERS = 256;
 
-        // compute Mandelbrot set
-        Picture panel = new Picture(N, N);
+        BufferedImage bufferedImage = new BufferedImage(N, N, BufferedImage.TYPE_INT_RGB);
 
+        // compute Mandelbrot set
         for (int i = 0; i < N; i++) {
             double x = xc - size / 2 + size * i / N;
             for (int j = 0; j < N; j++) {
                 double y = yc - size / 2 + size * j / N;
                 Complex z0 = new Complex(x, y);
                 int t = mand(z0, ITERS - 1);
-                panel.setRGB(i, N - 1 - j, ColorManager.HSBtoRGB(t, ITERS));
+                bufferedImage.setRGB(i, N - 1 - j, ColorManager.HSBtoRGB(t, ITERS));
 
             }
         }
 
-        panel.display();
+        new PicturePanel(bufferedImage).display();
     }
 
 }

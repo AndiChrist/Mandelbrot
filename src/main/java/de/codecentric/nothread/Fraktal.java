@@ -5,7 +5,7 @@
  */
 package de.codecentric.nothread;
 
-import de.codecentric.common.Picture;
+import de.codecentric.common.PicturePanel;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -57,8 +57,7 @@ public class Fraktal {
             fractal.compute(image);
         }
 
-        Picture pic = new Picture(image);
-        pic.display();
+        new PicturePanel(image).display();
     }
 
 }

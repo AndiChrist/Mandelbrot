@@ -5,7 +5,7 @@
  */
 package de.codecentric.thread;
 
-import de.codecentric.common.Picture;
+import de.codecentric.common.PicturePanel;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ForkJoinPool;
 
@@ -23,7 +23,7 @@ public class Mandelbrot {
                 new MandelbrotTask(image, 0, image.getWidth() - 1, 0, image.getHeight() - 1)
         );
 
-        Picture pic = new Picture(image);
-        pic.display();
+        new PicturePanel(image).display();
     }
+
 }

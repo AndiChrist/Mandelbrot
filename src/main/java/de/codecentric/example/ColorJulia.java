@@ -24,8 +24,9 @@ package de.codecentric.example;
  *
  ************************************************************************
  */
-import de.codecentric.common.Picture;
+import de.codecentric.common.PicturePanel;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import org.apache.commons.math3.complex.Complex;
 
@@ -56,7 +57,7 @@ public class ColorJulia {
         int N = 512;
         int ITERS = 100;
 
-        Picture pic = new Picture(N, N);
+        BufferedImage bufferedImage = new BufferedImage(N, N, BufferedImage.TYPE_INT_RGB);
 
         for (int i = 0; i < N; i++) {
             double x = xmin + i * width / N;
@@ -65,10 +66,11 @@ public class ColorJulia {
                 Complex z = new Complex(x, y);
                 int t = julia(c, z, ITERS);
 
-                pic.setRGB(i, N - 1 - j, Color.HSBtoRGB(0.5f * t / ITERS, 1.0f, 1.0f));
+                bufferedImage.setRGB(i, N - 1 - j, Color.HSBtoRGB(0.5f * t / ITERS, 1.0f, 1.0f));
             }
         }
-        pic.display();
+
+        new PicturePanel(bufferedImage).display();
     }
 
 }

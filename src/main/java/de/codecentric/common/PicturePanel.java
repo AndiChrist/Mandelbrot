@@ -5,7 +5,6 @@
  */
 package de.codecentric.common;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
@@ -15,15 +14,11 @@ import javax.swing.JPanel;
  *
  * @author Andreas Christ <andreas.christ@codecentric.de>
  */
-public class Picture extends JPanel {
+public class PicturePanel extends JPanel {
 
     private final BufferedImage image;
 
-    public Picture(int x, int y) {
-        this.image = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
-    }
-
-    public Picture(BufferedImage image) {
+    public PicturePanel(BufferedImage image) {
         this.image = image;
     }
 
@@ -44,11 +39,4 @@ public class Picture extends JPanel {
         f.setVisible(true);
     }
 
-    public void setRGB(int x, int y, Color color) {
-        image.setRGB(x, y, color.getRGB());
-    }
-
-    public void setRGB(int x, int y, int color) {
-        image.setRGB(x, y, color);
-    }
 }

@@ -6,7 +6,7 @@
 package de.codecentric.thread;
 
 import de.codecentric.common.ColorManager;
-import de.codecentric.nothread.FractalIterator;
+import de.codecentric.fractal.FractalIterator;
 import java.awt.image.BufferedImage;
 import static java.util.concurrent.ForkJoinTask.invokeAll;
 import java.util.concurrent.RecursiveAction;
@@ -24,8 +24,7 @@ public class MandelbrotTask extends RecursiveAction {
     private final int xStart, xEnd, yStart, yEnd;
     private final static int taskSplitThreshold = 1024;
 
-    MandelbrotTask(BufferedImage image, int xStart, int xEnd, int yStart,
-            int yEnd) {
+    MandelbrotTask(BufferedImage image, int xStart, int xEnd, int yStart, int yEnd) {
         this.image = image;
         this.xStart = xStart;
         this.xEnd = xEnd;

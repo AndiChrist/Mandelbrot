@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.codecentric.nothread;
+package de.codecentric.fractal;
 
 import java.util.logging.Logger;
 import org.apache.commons.math3.complex.Complex;
@@ -23,7 +23,7 @@ public class FractalIterator {
             z = z.multiply(z).add(c);
         }
 
-        return i;//ColorManager.HSBtoRGB(i, maxIterationSteps);
+        return i;
 
     }
 

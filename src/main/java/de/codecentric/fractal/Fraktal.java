@@ -3,9 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.codecentric.nothread;
+package de.codecentric.fractal;
 
 import de.codecentric.common.PicturePanel;
+import de.codecentric.fractal.strategies.ComputeJulia;
+import de.codecentric.fractal.strategies.ComputeMandelbrot;
+import de.codecentric.fractal.strategies.FractalInvoker;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -56,7 +59,11 @@ public class Fraktal {
                 strategy.setStrategy(new ComputeMandelbrot(min, max));
                 break;
             case "julia":
-                strategy.setStrategy(new ComputeJulia(min, max));
+                Complex c = new Complex(-0.74543, +0.11301); // TODO
+                strategy.setStrategy(new ComputeJulia(min, max, c));
+                break;
+            case "mandelbrottask":
+                strategy.setStrategy(new FractalInvoker(min, max));
                 break;
         }
 

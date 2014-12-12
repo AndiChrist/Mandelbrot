@@ -41,6 +41,7 @@ public class ComputeJulia implements ComputeFractal {
     }
 
     @Override
+    @SuppressWarnings("UnusedAssignment")
     public void compute(BufferedImage bild) {
         Callable<BufferedImage> callable = new ComputeCallable(bild);
         ExecutorService executor = Executors.newCachedThreadPool();

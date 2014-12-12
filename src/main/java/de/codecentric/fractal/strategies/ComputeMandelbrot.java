@@ -38,6 +38,7 @@ public class ComputeMandelbrot implements ComputeFractal {
     }
 
     @Override
+    @SuppressWarnings("UnusedAssignment")
     public void compute(BufferedImage image) {
 
         Callable<BufferedImage> callable = new ComputeCallable(image);

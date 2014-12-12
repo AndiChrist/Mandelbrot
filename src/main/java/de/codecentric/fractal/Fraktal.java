@@ -23,6 +23,7 @@ import org.apache.commons.math3.complex.Complex;
 public class Fraktal {
 
     private final static Logger LOGGER = Logger.getLogger(Fraktal.class.getName());
+    private static Properties prop;
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
         Fraktal fraktal = new Fraktal();
@@ -33,17 +34,17 @@ public class Fraktal {
         String type = typeProp.getProperty("type");
         fraktal.setType(type);
 
-        Properties prop = new Properties();
-        prop.load(Fraktal.class.getClassLoader().getResourceAsStream(type + ".properties"));
+        Fraktal.prop = new Properties();
+        Fraktal.prop.load(Fraktal.class.getClassLoader().getResourceAsStream(type + ".properties"));
 
-        fraktal.setMin(readProp(prop, "min.re", "min.im"));
-        fraktal.setMax(readProp(prop, "max.re", "max.im"));
+        fraktal.setMin(readProp(Fraktal.prop, "min.re", "min.im"));
+        fraktal.setMax(readProp(Fraktal.prop, "max.re", "max.im"));
 
-        fraktal.setWidth(Integer.valueOf(prop.getProperty("image.width")));
-        fraktal.setHeight(Integer.valueOf(prop.getProperty("image.height")));
+        fraktal.setWidth(Integer.valueOf(Fraktal.prop.getProperty("image.width")));
+        fraktal.setHeight(Integer.valueOf(Fraktal.prop.getProperty("image.height")));
 
-        fraktal.setInfinity(Double.parseDouble(prop.getProperty("infinity")));
-        fraktal.setIteration(Integer.valueOf(prop.getProperty("max.iteration")));
+        fraktal.setInfinity(Double.parseDouble(Fraktal.prop.getProperty("infinity")));
+        fraktal.setIteration(Integer.valueOf(Fraktal.prop.getProperty("max.iteration")));
 
         BufferedImage image = fraktal.computeFractal();
         new PicturePanel(image).display();
@@ -59,7 +60,7 @@ public class Fraktal {
                 strategy.setStrategy(new ComputeMandelbrot(min, max));
                 break;
             case "julia":
-                Complex c = new Complex(-0.74543, +0.11301); // TODO
+                Complex c = readProp(Fraktal.prop, "c.re", "c.im");
                 strategy.setStrategy(new ComputeJulia(min, max, c));
                 break;
             case "mandelbrottask":

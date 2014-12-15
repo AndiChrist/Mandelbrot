@@ -23,7 +23,6 @@ public class ComputeMandelbrotRecursive extends RecursiveAction {
     private static int maxIterationSteps;
     private static Complex min;
     private static Complex max;
-    //private static BufferedImage image;
     private static int[][] image;
     private final int xStart, xEnd, yStart, yEnd;
     private final static int taskSplitThreshold = 1024;
@@ -58,7 +57,6 @@ public class ComputeMandelbrotRecursive extends RecursiveAction {
 
                 int i = FractalIterator.iterate(Complex.ZERO, c, maxIterationSteps, maxInfinity);
                 image[n][m] = i;
-                //image.setRGB(n, m, ColorManager.HSBtoRGB(i, maxIterationSteps));
             }
         }
     }

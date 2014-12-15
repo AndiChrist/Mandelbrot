@@ -6,7 +6,6 @@
 package de.codecentric.fractal;
 
 import de.codecentric.fractal.strategies.ComputeFractal;
-import java.awt.image.BufferedImage;
 
 /**
  *
@@ -20,7 +19,7 @@ class FraktalStrategy {
         strategy = STRATEGY;
     }
 
-    void compute(BufferedImage image) {
+    void compute(int[][] image) {
         if (strategy != null) {
             strategy.compute(image);
         }

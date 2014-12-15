@@ -5,9 +5,7 @@
  */
 package de.codecentric.fractal.strategies;
 
-import de.codecentric.common.ColorManager;
 import de.codecentric.fractal.FractalIterator;
-import java.awt.image.BufferedImage;
 import static java.util.concurrent.ForkJoinTask.invokeAll;
 import java.util.concurrent.RecursiveAction;
 import java.util.logging.Logger;
@@ -25,12 +23,13 @@ public class ComputeMandelbrotRecursive extends RecursiveAction {
     private static int maxIterationSteps;
     private static Complex min;
     private static Complex max;
-    private static BufferedImage image;
+    //private static BufferedImage image;
+    private static int[][] image;
     private final int xStart, xEnd, yStart, yEnd;
     private final static int taskSplitThreshold = 1024;
 
-    public ComputeMandelbrotRecursive(BufferedImage image) {
-        this(0, image.getWidth() - 1, 0, image.getHeight() - 1);
+    public ComputeMandelbrotRecursive(int[][] image) {
+        this(0, image.length - 1, 0, image[0].length - 1);
         ComputeMandelbrotRecursive.image = image;
     }
 
@@ -42,8 +41,11 @@ public class ComputeMandelbrotRecursive extends RecursiveAction {
     }
 
     public void render() {
-        double spaltenBreite = (max.getReal() - min.getReal()) / image.getWidth();
-        double spaltenHöhe = (max.getImaginary() - min.getImaginary()) / image.getHeight();
+        int width = image.length;
+        int height = image[0].length;
+
+        double spaltenBreite = (max.getReal() - min.getReal()) / width;
+        double spaltenHöhe = (max.getImaginary() - min.getImaginary()) / height;
 
         for (int m = yStart; m <= yEnd; m++) {
             double im = min.getImaginary() + m * spaltenHöhe;
@@ -55,7 +57,8 @@ public class ComputeMandelbrotRecursive extends RecursiveAction {
                 // Complex z = Complex.ZERO;
 
                 int i = FractalIterator.iterate(Complex.ZERO, c, maxIterationSteps, maxInfinity);
-                image.setRGB(n, m, ColorManager.HSBtoRGB(i, maxIterationSteps));
+                image[n][m] = i;
+                //image.setRGB(n, m, ColorManager.HSBtoRGB(i, maxIterationSteps));
             }
         }
     }

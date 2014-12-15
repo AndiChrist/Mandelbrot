@@ -9,7 +9,6 @@ import de.codecentric.common.PicturePanel;
 import de.codecentric.fractal.strategies.ComputeJulia;
 import de.codecentric.fractal.strategies.ComputeMandelbrot;
 import de.codecentric.fractal.strategies.FractalInvoker;
-import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
@@ -46,13 +45,13 @@ public class Fraktal {
         fraktal.setInfinity(Double.parseDouble(Fraktal.prop.getProperty("infinity")));
         fraktal.setIteration(Integer.valueOf(Fraktal.prop.getProperty("max.iteration")));
 
-        BufferedImage image = fraktal.computeFractal();
+        int[][] image = fraktal.computeFractal();
         new PicturePanel(image).display();
 
     }
 
-    private BufferedImage computeFractal() {
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    private int[][] computeFractal() {
+        int[][] image = new int[width][height];
 
         FraktalStrategy strategy = new FraktalStrategy();
         switch (this.type) {

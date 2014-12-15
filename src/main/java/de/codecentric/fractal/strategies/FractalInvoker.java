@@ -5,7 +5,6 @@
  */
 package de.codecentric.fractal.strategies;
 
-import java.awt.image.BufferedImage;
 import java.util.concurrent.ForkJoinPool;
 import org.apache.commons.math3.complex.Complex;
 
@@ -27,7 +26,7 @@ public class FractalInvoker implements ComputeFractal {
     }
 
     @Override
-    public void compute(BufferedImage image) {
+    public void compute(int[][] image) {
         ComputeMandelbrotRecursive task = new ComputeMandelbrotRecursive(image);
         task.setMin(min);
         task.setMax(max);

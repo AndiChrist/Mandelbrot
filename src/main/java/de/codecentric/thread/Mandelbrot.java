@@ -6,7 +6,6 @@
 package de.codecentric.thread;
 
 import de.codecentric.common.PicturePanel;
-import java.awt.image.BufferedImage;
 import java.util.concurrent.ForkJoinPool;
 
 /**
@@ -15,12 +14,15 @@ import java.util.concurrent.ForkJoinPool;
  */
 public class Mandelbrot {
 
+    private static final int WIDTH = 768;
+    private static final int HEIGHT = 768;
+
     public static void main(String[] args) {
-        BufferedImage image = new BufferedImage(768, 768, BufferedImage.TYPE_INT_RGB);
+        int[][] image = new int[WIDTH][HEIGHT];
 
         ForkJoinPool pool = new ForkJoinPool();
         pool.invoke(
-                new MandelbrotTask(image, 0, image.getWidth() - 1, 0, image.getHeight() - 1)
+                new MandelbrotTask(image, 0, WIDTH - 1, 0, HEIGHT - 1)
         );
 
         new PicturePanel(image).display();

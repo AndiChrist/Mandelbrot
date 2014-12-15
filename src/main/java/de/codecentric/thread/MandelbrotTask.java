@@ -5,9 +5,7 @@
  */
 package de.codecentric.thread;
 
-import de.codecentric.common.ColorManager;
 import de.codecentric.fractal.FractalIterator;
-import java.awt.image.BufferedImage;
 import static java.util.concurrent.ForkJoinTask.invokeAll;
 import java.util.concurrent.RecursiveAction;
 import org.apache.commons.math3.complex.Complex;
@@ -20,11 +18,11 @@ public class MandelbrotTask extends RecursiveAction {
 
     private final static double size = 3.0, offsetX = -0.7, thresholdSq = 2.0;
     private final static int maxIterations = 30;
-    private final BufferedImage image;
+    private final int[][] image;
     private final int xStart, xEnd, yStart, yEnd;
     private final static int taskSplitThreshold = 1024;
 
-    MandelbrotTask(BufferedImage image, int xStart, int xEnd, int yStart, int yEnd) {
+    MandelbrotTask(int[][] image, int xStart, int xEnd, int yStart, int yEnd) {
         this.image = image;
         this.xStart = xStart;
         this.xEnd = xEnd;
@@ -33,17 +31,21 @@ public class MandelbrotTask extends RecursiveAction {
     }
 
     public void render() {
+        int width = image.length;
+        int height = image[0].length;
+
         for (int x = xStart; x <= xEnd; x++) {
-            double re = x * size / image.getWidth() - size / 2 + offsetX;
+            double re = x * size / width - size / 2 + offsetX;
 
             for (int y = yStart; y <= yEnd; y++) {
-                double im = y * size / image.getHeight() - size / 2;
+                double im = y * size / height - size / 2;
 
                 Complex c = new Complex(re, im);
                 Complex z = Complex.ZERO;
 
                 int i = FractalIterator.iterate(z, c, maxIterations, thresholdSq);
-                image.setRGB(x, y, ColorManager.HSBtoRGB(i, maxIterations));
+                //image.setRGB(x, y, ColorManager.HSBtoRGB(i, maxIterations));
+                image[x][y] = i;
             }
         }
     }

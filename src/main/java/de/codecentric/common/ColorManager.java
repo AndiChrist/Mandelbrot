@@ -6,6 +6,8 @@
 package de.codecentric.common;
 
 import java.awt.Color;
+import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
 import org.apache.commons.math3.complex.Complex;
 
 /**
@@ -47,6 +49,45 @@ public class ColorManager {
         }
         int cidx = Color.HSBtoRGB(0.0f, 0.0f, (float) (bright));
         return new Color(cidx).getRGB();
+    }
+
+    public static ColorModel createPalette(int limit) {
+        byte[] red = new byte[limit];
+        byte[] green = new byte[limit];
+        byte[] blue = new byte[limit];
+        for (int n = 0; n < limit; n++) {
+            Color color = Color.getHSBColor((float) (n % 64) / 64.0f,
+                    0.6f + 0.4f * (float) Math.cos((float) n / 40.0f), 1.0f);
+            red[n] = (byte) color.getRed();
+            blue[n] = (byte) color.getBlue();
+            green[n] = (byte) color.getGreen();
+        }
+        return new IndexColorModel(8, limit, red, green, blue);
+    }
+
+    public static ColorModel createPaletteFixed(int limit) {
+        Color[] colors = {Color.red, Color.green, Color.blue,
+            Color.cyan, Color.magenta, Color.yellow,
+            Color.white, Color.black};
+
+        byte[] red = new byte[limit];
+        byte[] green = new byte[limit];
+        byte[] blue = new byte[limit];
+        for (int n = 0; n < limit; n++) {
+            red[n] = (byte) colors[n].getRed();
+            blue[n] = (byte) colors[n].getBlue();
+            green[n] = (byte) colors[n].getGreen();
+        }
+        return new IndexColorModel(8, limit, red, green, blue);
+    }
+
+    public static ColorModel createBlackWhite() {
+        ColorModel cm = new IndexColorModel(1, 2,
+                new byte[]{(byte) 0, (byte) 255},
+                new byte[]{(byte) 0, (byte) 255},
+                new byte[]{(byte) 0, (byte) 255});
+
+        return cm;
     }
 
 }

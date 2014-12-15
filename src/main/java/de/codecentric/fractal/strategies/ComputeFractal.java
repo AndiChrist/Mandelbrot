@@ -5,15 +5,13 @@
  */
 package de.codecentric.fractal.strategies;
 
-import java.awt.image.BufferedImage;
-
 /**
  *
  * @author Andreas Christ <andreas.christ@codecentric.de>
  */
 public interface ComputeFractal {
 
-    public void compute(BufferedImage image);
+    public void compute(int[][] image);
 
     public void setInfinity(Double infinity);
 

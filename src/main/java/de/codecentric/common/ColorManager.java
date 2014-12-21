@@ -65,7 +65,7 @@ public class ColorManager {
         return new IndexColorModel(8, limit, red, green, blue);
     }
 
-    public static ColorModel createPaletteFixed(int limit) {
+    public static ColorModel createPalette8Colors(int limit) {
         Color[] colors = {Color.red, Color.green, Color.blue,
             Color.cyan, Color.magenta, Color.yellow,
             Color.white, Color.black};
@@ -74,9 +74,9 @@ public class ColorManager {
         byte[] green = new byte[limit];
         byte[] blue = new byte[limit];
         for (int n = 0; n < limit; n++) {
-            red[n] = (byte) colors[n].getRed();
-            blue[n] = (byte) colors[n].getBlue();
-            green[n] = (byte) colors[n].getGreen();
+            red[n] = (byte) colors[n % colors.length].getRed();
+            blue[n] = (byte) colors[n % colors.length].getBlue();
+            green[n] = (byte) colors[n % colors.length].getGreen();
         }
         return new IndexColorModel(8, limit, red, green, blue);
     }

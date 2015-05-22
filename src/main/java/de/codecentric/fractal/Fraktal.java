@@ -47,16 +47,16 @@ public class Fraktal {
         LOGGER.log(Level.INFO, "Rendering stategy: {0}", type);
         
         // load special fractal properties
-        Fraktal.prop.load(fraktalClassLoader.getResourceAsStream(FRAKTAL + type + ".properties"));
+        prop.load(fraktalClassLoader.getResourceAsStream(FRAKTAL + type + ".properties"));
         
-        fraktal.setMin(readProp(Fraktal.prop, "min.re", "min.im"));
-        fraktal.setMax(readProp(Fraktal.prop, "max.re", "max.im"));
+        fraktal.setMin(readProp(prop, "min.re", "min.im"));
+        fraktal.setMax(readProp(prop, "max.re", "max.im"));
 
-        fraktal.setWidth(Integer.valueOf(Fraktal.prop.getProperty("image.width")));
-        fraktal.setHeight(Integer.valueOf(Fraktal.prop.getProperty("image.height")));
+        fraktal.setWidth(Integer.valueOf(prop.getProperty("image.width")));
+        fraktal.setHeight(Integer.valueOf(prop.getProperty("image.height")));
 
-        fraktal.setInfinity(Double.parseDouble(Fraktal.prop.getProperty("infinity")));
-        fraktal.setIteration(Integer.valueOf(Fraktal.prop.getProperty("max.iteration")));
+        fraktal.setInfinity(Double.parseDouble(prop.getProperty("infinity")));
+        fraktal.setIteration(Integer.valueOf(prop.getProperty("max.iteration")));
         
         // set rendering strategy
         switch (type) {
@@ -64,7 +64,7 @@ public class Fraktal {
                 strategy.setStrategy(new ComputeMandelbrot(fraktal.min, fraktal.max));
                 break;
             case "julia":
-                Complex c = readProp(Fraktal.prop, "c.re", "c.im");
+                Complex c = readProp(prop, "c.re", "c.im");
                 strategy.setStrategy(new ComputeJulia(fraktal.min, fraktal.max, c));
                 break;
             case "mandelbrottask":

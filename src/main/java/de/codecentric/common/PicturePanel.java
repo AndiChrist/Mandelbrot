@@ -11,6 +11,8 @@ import java.awt.Rectangle;
 import java.awt.image.ColorModel;
 import java.awt.image.ImageObserver;
 import java.awt.image.MemoryImageSource;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -19,45 +21,56 @@ import javax.swing.JPanel;
  * @author Andreas Christ <andreas.christ@codecentric.de>
  */
 public class PicturePanel extends JPanel {
+    
+    private static final Logger LOGGER = Logger.getLogger(PicturePanel.class.getName());
 
     private final Image image;
     private static final int LIMIT = 1 << 8;
     MemoryImageSource source;
     ImageObserver myObserver;
 
-    public PicturePanel(int[][] image) {
-        int width = image.length;
-        int height = image[0].length;
-        int[] pixels = new int[width * height];
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                pixels[j * width + i] = image[i][j];
+    public PicturePanel(int[][] picture) {
+        int picWidth = picture.length;
+        int picHeight = picture[0].length;
+        int[] pixels = new int[picWidth * picHeight];
+        
+        for (int i = 0; i < picWidth; i++) {
+            for (int j = 0; j < picHeight; j++) {
+                pixels[j * picWidth + i] = picture[i][j];
             }
         }
 
         ColorModel model = ColorManager.createPalette(LIMIT);
-        source = new MemoryImageSource(width, height, model, pixels, 0, width);
+        source = new MemoryImageSource(picWidth, picHeight, model, pixels, 0, picWidth);
         this.image = createImage(source);
 
-        myObserver = (Image image1, int flags1, int x1, int y1, int width1, int height1) -> {
-            if ((flags1 & HEIGHT) != 0) {
-                System.out.println("Image height = " + height1);
+        myObserver = (Image img, int infoflags, int x, int y, int width, int height) -> {
+            /*
+            if ((infoflags & WIDTH) != 0) {
+                LOGGER.log(Level.INFO, "Image width = {0}", width);
             }
-            if ((flags1 & WIDTH) != 0) {
-                System.out.println("Image width = " + width1);
+            if ((infoflags & HEIGHT) != 0) {
+                LOGGER.log(Level.INFO, "Image height = {0}", height);
             }
-            if ((flags1 & FRAMEBITS) != 0) {
-                System.out.println("Another frame finished.");
+            if ((infoflags & PROPERTIES) != 0) {
+                LOGGER.log(Level.INFO, "Image properties....");
             }
-            if ((flags1 & SOMEBITS) != 0) {
-                System.out.println("Image section :" + new Rectangle(x1, y1, width1, height1));
+            if ((infoflags & SOMEBITS) != 0) {
+                LOGGER.log(Level.INFO, "Image section :{0}", new Rectangle(x, y, width, height));
             }
-            if ((flags1 & ALLBITS) != 0) {
-                System.out.println("Image finished!");
+            if ((infoflags & FRAMEBITS) != 0) {
+                LOGGER.log(Level.INFO, "Another frame finished.");
             }
-            if ((flags1 & ABORT) != 0) {
-                System.out.println("Image load aborted...");
+            if ((infoflags & ALLBITS) != 0) {
+                LOGGER.log(Level.INFO, "Image finished!");
             }
+            if ((infoflags & ERROR) != 0) {
+                LOGGER.log(Level.INFO, "Image error!!");
+            }
+            if ((infoflags & ABORT) != 0) {
+                LOGGER.log(Level.INFO, "Image load aborted...");
+            }
+            */
             return true;
         };
     }

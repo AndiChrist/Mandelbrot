@@ -74,12 +74,12 @@ public class ComputeMandelbrot implements ComputeFractal {
         public int[][] call() throws Exception {
             int imageWidth = bild.length;
             int imageHeight = bild[0].length;
-
+            
             double columnWidth = (max.getReal() - min.getReal()) / imageWidth;
             double columnHeight = (max.getImaginary() - min.getImaginary()) / imageHeight;
 
             for (int m = 0; m < imageHeight; m++) {
-                double im = min.getImaginary() + m * columnWidth;
+                double im = min.getImaginary() + m * columnHeight;
 
                 for (int n = 0; n < imageWidth; n++) {
                     double re = min.getReal() + n * columnWidth;

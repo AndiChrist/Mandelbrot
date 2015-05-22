@@ -41,10 +41,8 @@ public class MandelbrotTask extends RecursiveAction {
                 double im = y * size / height - size / 2;
 
                 Complex c = new Complex(re, im);
-                Complex z = Complex.ZERO;
 
-                int i = FractalIterator.iterate(z, c, maxIterations, thresholdSq);
-                //image.setRGB(x, y, ColorManager.HSBtoRGB(i, maxIterations));
+                int i = FractalIterator.iterate(Complex.ZERO, c, maxIterations, thresholdSq);
                 image[x][y] = i;
             }
         }

@@ -72,21 +72,21 @@ public class ComputeMandelbrot implements ComputeFractal {
 
         @Override
         public int[][] call() throws Exception {
-            int width = bild.length;
-            int height = bild[0].length;
-            double spaltenBreite = (max.getReal() - min.getReal()) / width;
-            double spaltenHöhe = (max.getImaginary() - min.getImaginary()) / height;
+            int imageWidth = bild.length;
+            int imageHeight = bild[0].length;
 
-            for (int m = 0; m < height; m++) {
-                double im = min.getImaginary() + m * spaltenHöhe;
+            double columnWidth = (max.getReal() - min.getReal()) / imageWidth;
+            double columnHeight = (max.getImaginary() - min.getImaginary()) / imageHeight;
 
-                for (int n = 0; n < width; n++) {
-                    double re = min.getReal() + n * spaltenBreite;
+            for (int m = 0; m < imageHeight; m++) {
+                double im = min.getImaginary() + m * columnWidth;
+
+                for (int n = 0; n < imageWidth; n++) {
+                    double re = min.getReal() + n * columnWidth;
 
                     c = new Complex(re, im);
 
-                    int i = FractalIterator.iterate(Complex.ZERO, c, iteration, infinity);
-                    bild[n][m] = i;
+                    bild[n][m] = FractalIterator.iterate(Complex.ZERO, c, iteration, infinity);
                 }
             }
             return bild;

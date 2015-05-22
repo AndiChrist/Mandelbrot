@@ -74,22 +74,20 @@ public class ComputeJulia implements ComputeFractal {
 
         @Override
         public int[][] call() throws Exception {
-            int width = bild.length;
-            int height = bild[0].length;
+            int imageWidth = bild.length;
+            int imageHeight = bild[0].length;
 
-            double spaltenBreite = (max.getReal() - min.getReal()) / width;
-            double spaltenHöhe = (max.getImaginary() - min.getImaginary()) / height;
+            double columnWidth = (max.getReal() - min.getReal()) / imageWidth;
+            double columnHeight = (max.getImaginary() - min.getImaginary()) / imageHeight;
 
-            for (int m = 0; m < height; m++) {
-                double im = min.getImaginary() + m * spaltenHöhe;
-
-                for (int n = 0; n < width; n++) {
-                    double re = min.getReal() + n * spaltenBreite;
+            for (int n = 0; n < imageWidth; n++) {
+                double re = min.getReal() + n * columnWidth;
+                for (int m = 0; m < imageHeight; m++) {
+                    double im = min.getImaginary() + m * columnHeight;
 
                     z = new Complex(re, im);
 
-                    int i = FractalIterator.iterate(z, c, iteration, infinity);
-                    bild[n][m] = i;
+                    bild[n][m] = FractalIterator.iterate(z, c, iteration, infinity);
 
                 }
             }

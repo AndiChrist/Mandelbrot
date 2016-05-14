@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.codecentric.fractal;
+package io.github.andichrist.fractal;
 
 import java.util.logging.Logger;
 import org.apache.commons.math3.complex.Complex;

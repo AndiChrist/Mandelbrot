@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.codecentric.fractal;
+package io.github.andichrist.fractal;
 
-import de.codecentric.common.PicturePanel;
-import de.codecentric.fractal.strategies.ComputeJulia;
-import de.codecentric.fractal.strategies.ComputeMandelbrot;
-import de.codecentric.fractal.strategies.FractalInvoker;
+import io.github.andichrist.common.PicturePanel;
+import io.github.andichrist.fractal.strategies.ComputeJulia;
+import io.github.andichrist.fractal.strategies.ComputeMandelbrot;
+import io.github.andichrist.fractal.strategies.FractalInvoker;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;

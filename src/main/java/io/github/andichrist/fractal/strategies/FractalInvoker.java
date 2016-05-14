@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.codecentric.fractal.strategies;
+package io.github.andichrist.fractal.strategies;
 
 import java.util.concurrent.ForkJoinPool;
 import org.apache.commons.math3.complex.Complex;

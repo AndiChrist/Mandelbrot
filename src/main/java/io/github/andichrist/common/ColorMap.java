@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.codecentric.common;
+package io.github.andichrist.common;
 
 import java.awt.Color;
 import java.util.ArrayList;

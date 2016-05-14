@@ -10,9 +10,18 @@ sourceCompatibility = '1.8'
 // Note however, that you may define your own "run" and "debug" task if you
 // prefer. In this case NetBeans will not add these tasks but you may rely on
 // your own implementation.
-if (!hasProperty('mainClass')) {
-    ext.mainClass = 'de.codecentric.fractal.Fraktal'
+// if (!hasProperty('mainClass')) {
+//    ext.mainClass = 'io.github.andichrist.fractal.Fraktal'
+//}
+
+task(run, dependsOn: 'classes', type: JavaExec) {
+    main = 'io.github.andichrist.fractal.Fraktal'
+    classpath = sourceSets.main.runtimeClasspath
+    args = ["arg1", "arg2"]
+    systemProperty 'simple.message', 'Hello '
 }
+
+// defaultTasks 'runFractal'
 
 repositories {
     mavenCentral()

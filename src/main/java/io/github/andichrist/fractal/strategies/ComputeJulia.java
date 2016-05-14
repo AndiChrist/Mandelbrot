@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.codecentric.fractal.strategies;
+package io.github.andichrist.fractal.strategies;
 
-import de.codecentric.fractal.FractalIterator;
+import io.github.andichrist.fractal.FractalIterator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -16,13 +16,13 @@ import java.util.logging.Logger;
 import org.apache.commons.math3.complex.Complex;
 
 /**
- * Zn = Z(n-1)^2 + C
+ * Z(n+1) = Zn^2 + C
  *
  * @author Andreas Christ <andreas.christ@codecentric.de>
  */
-public class ComputeMandelbrot implements ComputeFractal {
+public class ComputeJulia implements ComputeFractal {
 
-    private final static Logger LOGGER = Logger.getLogger(ComputeMandelbrot.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ComputeJulia.class.getName());
 
     static Complex min;
     static Complex max;
@@ -30,21 +30,23 @@ public class ComputeMandelbrot implements ComputeFractal {
     static double infinity;
     static int iteration;
 
-    public ComputeMandelbrot(Complex min, Complex max) {
-        ComputeMandelbrot.min = min;
-        ComputeMandelbrot.max = max;
+    private static Complex c;
+
+    public ComputeJulia(Complex min, Complex max, Complex c) {
+        ComputeJulia.min = min;
+        ComputeJulia.max = max;
+        ComputeJulia.c = c;
     }
 
     @Override
     @SuppressWarnings("UnusedAssignment")
-    public void compute(int[][] image) {
-
-        Callable<int[][]> callable = new ComputeCallable(image);
+    public void compute(int[][] bild) {
+        Callable<int[][]> callable = new ComputeCallable(bild);
         ExecutorService executor = Executors.newCachedThreadPool();
         Future<int[][]> result = executor.submit(callable);
 
         try {
-            image = result.get();
+            bild = result.get();
         } catch (InterruptedException | ExecutionException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
@@ -52,19 +54,19 @@ public class ComputeMandelbrot implements ComputeFractal {
 
     @Override
     public void setInfinity(Double infinity) {
-        ComputeMandelbrot.infinity = infinity;
+        ComputeJulia.infinity = infinity;
     }
 
     @Override
     public void setIteration(Integer iteration) {
-        ComputeMandelbrot.iteration = iteration;
+        ComputeJulia.iteration = iteration;
     }
 
     private static class ComputeCallable implements Callable<int[][]> {
 
         final int[][] bild;
 
-        Complex c;
+        Complex z;
 
         ComputeCallable(int[][] bild) {
             this.bild = bild;
@@ -74,19 +76,19 @@ public class ComputeMandelbrot implements ComputeFractal {
         public int[][] call() throws Exception {
             int imageWidth = bild.length;
             int imageHeight = bild[0].length;
-            
+
             double columnWidth = (max.getReal() - min.getReal()) / imageWidth;
             double columnHeight = (max.getImaginary() - min.getImaginary()) / imageHeight;
 
-            for (int m = 0; m < imageHeight; m++) {
-                double im = min.getImaginary() + m * columnHeight;
+            for (int n = 0; n < imageWidth; n++) {
+                double re = min.getReal() + n * columnWidth;
+                for (int m = 0; m < imageHeight; m++) {
+                    double im = min.getImaginary() + m * columnHeight;
 
-                for (int n = 0; n < imageWidth; n++) {
-                    double re = min.getReal() + n * columnWidth;
+                    z = new Complex(re, im);
 
-                    c = new Complex(re, im);
+                    bild[n][m] = FractalIterator.iterate(z, c, iteration, infinity);
 
-                    bild[n][m] = FractalIterator.iterate(Complex.ZERO, c, iteration, infinity);
                 }
             }
             return bild;

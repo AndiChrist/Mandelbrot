@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.codecentric.thread;
+package io.github.andichrist.thread;
 
-import de.codecentric.fractal.FractalIterator;
+import io.github.andichrist.fractal.FractalIterator;
 import static java.util.concurrent.ForkJoinTask.invokeAll;
 import java.util.concurrent.RecursiveAction;
 import org.apache.commons.math3.complex.Complex;

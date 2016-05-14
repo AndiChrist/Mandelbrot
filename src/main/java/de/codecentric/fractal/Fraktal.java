@@ -11,6 +11,7 @@ import de.codecentric.fractal.strategies.ComputeMandelbrot;
 import de.codecentric.fractal.strategies.FractalInvoker;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +37,9 @@ public class Fraktal {
     private int iteration;
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
+        LOGGER.info(Arrays.toString(args));
+        LOGGER.info(System.getProperty("simple.message"));
+        
         Fraktal fraktal = new Fraktal();
         ClassLoader fraktalClassLoader = Fraktal.class.getClassLoader();
         

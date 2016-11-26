@@ -11,13 +11,13 @@ import java.util.List;
 
 /**
  *
- * @author Andreas Christ <andreas.christ@codecentric.de>
+ * @author Andreas Christ <andreas.christ@sixt.com>
  */
-public class ColorMap {
+class ColorMap {
 
     private static final List<Color> colors; // = new ArrayList<>();
 
-    static public Color getColor(int t) {
+    static Color getColor(int t) {
         return colors.get(t);
     }
 

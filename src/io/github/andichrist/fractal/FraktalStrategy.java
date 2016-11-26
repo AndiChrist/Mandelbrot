@@ -9,13 +9,13 @@ import io.github.andichrist.fractal.strategies.ComputeFractal;
 
 /**
  *
- * @author Andreas Christ <andreas.christ@codecentric.de>
+ * @author Andreas Christ <andreas.christ@sixt.com>
  */
 class FraktalStrategy {
 
     private ComputeFractal strategy = null;
 
-    public void setStrategy(final ComputeFractal STRATEGY) {
+    void setStrategy(final ComputeFractal STRATEGY) {
         strategy = STRATEGY;
     }
 

@@ -12,7 +12,7 @@ import org.apache.commons.math3.complex.Complex;
 
 /**
  *
- * @author Andreas Christ <andreas.christ@codecentric.de>
+ * @author Andreas Christ <andreas.christ@sixt.com>
  */
 public class ColorManager {
 
@@ -51,7 +51,7 @@ public class ColorManager {
         return new Color(cidx).getRGB();
     }
 
-    public static ColorModel createPalette(int limit) {
+    static ColorModel createPalette(int limit) {
         byte[] red = new byte[limit];
         byte[] green = new byte[limit];
         byte[] blue = new byte[limit];
@@ -81,6 +81,7 @@ public class ColorManager {
         return new IndexColorModel(8, limit, red, green, blue);
     }
 
+    /*
     public static ColorModel createBlackWhite() {
         ColorModel cm = new IndexColorModel(1, 2,
                 new byte[]{(byte) 0, (byte) 255},
@@ -89,5 +90,6 @@ public class ColorManager {
 
         return cm;
     }
+    */
 
 }

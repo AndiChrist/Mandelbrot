@@ -10,15 +10,15 @@ import org.apache.commons.math3.complex.Complex;
 
 /**
  *
- * @author Andreas Christ <andreas.christ@codecentric.de>
+ * @author Andreas Christ <andreas.christ@sixt.com>
  */
 public class FractalInvoker implements ComputeFractal {
 
-    static Complex min;
-    static Complex max;
+    static private Complex min;
+    static private Complex max;
 
-    static double infinity;
-    static int iteration;
+    static private double infinity;
+    static private int iteration;
 
     public FractalInvoker(Complex min, Complex max) {
         FractalInvoker.min = min;

@@ -18,7 +18,7 @@ import org.apache.commons.math3.complex.Complex;
 /**
  * Zn = Z(n-1)^2 + C
  *
- * @author Andreas Christ <andreas.christ@codecentric.de>
+ * @author Andreas Christ <andreas.christ@sixt.com>
  */
 public class ComputeMandelbrot implements ComputeFractal {
 

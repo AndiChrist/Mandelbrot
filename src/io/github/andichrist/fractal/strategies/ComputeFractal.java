@@ -7,14 +7,14 @@ package io.github.andichrist.fractal.strategies;
 
 /**
  *
- * @author Andreas Christ <andreas.christ@codecentric.de>
+ * @author Andreas Christ <andreas.christ@sixt.com>
  */
 public interface ComputeFractal {
 
-    public void compute(int[][] image);
+    void compute(int[][] image);
 
-    public void setInfinity(Double infinity);
+    void setInfinity(Double infinity);
 
-    public void setIteration(Integer iteration);
+    void setIteration(Integer iteration);
 
 }

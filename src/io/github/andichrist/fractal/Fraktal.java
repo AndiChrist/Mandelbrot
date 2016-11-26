@@ -19,7 +19,7 @@ import org.apache.commons.math3.complex.Complex;
 
 /**
  *
- * @author Andreas Christ <andreas.christ@codecentric.de>
+ * @author Andreas Christ <andreas.christ@sixt.com>
  */
 public class Fraktal {
 
@@ -36,7 +36,7 @@ public class Fraktal {
     private double infinity;
     private int iteration;
 
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+    public static void main(String[] args) throws IOException {
         LOGGER.info(Arrays.toString(args));
         LOGGER.info(System.getProperty("simple.message"));
         
@@ -97,9 +97,9 @@ public class Fraktal {
     /**
      * reads coordinate from property file
      * 
-     * @param prop
-     * @param re
-     * @param im
+     * @param prop Properties file name
+     * @param re Real value
+     * @param im Imaginary value
      * @return coordinate as complex object
      */
     private static Complex readProp(Properties prop, String re, String im) {

@@ -11,12 +11,11 @@ import java.awt.image.ColorModel;
 import java.awt.image.ImageObserver;
 import java.awt.image.MemoryImageSource;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /**
  *
- * @author Andreas Christ <andreas.christ@codecentric.de>
+ * @author Andreas Christ <andreas.christ@sixt.com>
  */
 public class PicturePanel extends JPanel {
     
@@ -24,8 +23,8 @@ public class PicturePanel extends JPanel {
 
     private final Image image;
     private static final int LIMIT = 1 << 8;
-    MemoryImageSource source;
-    ImageObserver myObserver;
+    private MemoryImageSource source;
+    private ImageObserver myObserver;
 
     public PicturePanel(int[][] picture) {
         int picWidth = picture.length;
@@ -87,7 +86,7 @@ public class PicturePanel extends JPanel {
 
         JFrame f = new JFrame();
         f.setTitle("Mandelbrot " + width + "x" + height);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setContentPane(this);
         f.setSize(width, height);
         f.setVisible(true);

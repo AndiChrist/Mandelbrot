@@ -5,23 +5,19 @@
  */
 package io.github.andichrist.simple;
 
-/**
- *
- * @author Andreas Christ <andreas.christ@codecentric.de>
- */
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.MemoryImageSource;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
+
 import org.apache.commons.math3.complex.Complex;
 
 /**
  *
- * @author andichrist
+ * @author Andreas Christ <andreas.christ@sixt.com>
  */
 public class Mandelbrot extends JPanel {
 
@@ -50,7 +46,7 @@ public class Mandelbrot extends JPanel {
         m.zeige();
     }
 
-    public void berechne() {
+    private void berechne() {
         for (int m = 0; m < höhe; m++) {
             double im = bEcke + m * spaltHöhe;
             for (int n = 0; n < breite; n++) {
@@ -90,11 +86,11 @@ public class Mandelbrot extends JPanel {
          }*/
     }
 
-    static Image image;
+    private static Image image;
 
-    public void zeige() {
+    private void zeige() {
         JFrame f = new JFrame("Mandelbrot");
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         image = getImageFromArray(bild, breite, höhe);
         f.add(new Mandelbrot());
         f.setSize(breite, höhe);
@@ -108,7 +104,7 @@ public class Mandelbrot extends JPanel {
         }
     }
 
-    public Image getImageFromArray(int[] pixels, int width, int height) {
+    private Image getImageFromArray(int[] pixels, int width, int height) {
         MemoryImageSource mis = new MemoryImageSource(width, height, pixels, 0, width);
         Toolkit tk = Toolkit.getDefaultToolkit();
         return tk.createImage(mis);

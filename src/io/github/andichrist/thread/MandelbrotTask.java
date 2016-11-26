@@ -12,7 +12,7 @@ import org.apache.commons.math3.complex.Complex;
 
 /**
  *
- * @author Andreas Christ <andreas.christ@codecentric.de>
+ * @author Andreas Christ <andreas.christ@sixt.com>
  */
 public class MandelbrotTask extends RecursiveAction {
 
@@ -30,7 +30,7 @@ public class MandelbrotTask extends RecursiveAction {
         this.yEnd = yEnd;
     }
 
-    public void render() {
+    private void render() {
         int width = image.length;
         int height = image[0].length;
 

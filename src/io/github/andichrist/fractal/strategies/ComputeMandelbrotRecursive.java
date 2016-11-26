@@ -13,7 +13,7 @@ import org.apache.commons.math3.complex.Complex;
 
 /**
  *
- * @author Andreas Christ <andreas.christ@codecentric.de>
+ * @author Andreas Christ <andreas.christ@sixt.com>
  */
 public class ComputeMandelbrotRecursive extends RecursiveAction {
 
@@ -27,19 +27,19 @@ public class ComputeMandelbrotRecursive extends RecursiveAction {
     private final int xStart, xEnd, yStart, yEnd;
     private final static int taskSplitThreshold = 1024;
 
-    public ComputeMandelbrotRecursive(int[][] image) {
+    ComputeMandelbrotRecursive(int[][] image) {
         this(0, image.length - 1, 0, image[0].length - 1);
         ComputeMandelbrotRecursive.image = image;
     }
 
-    public ComputeMandelbrotRecursive(int xStart, int xEnd, int yStart, int yEnd) {
+    private ComputeMandelbrotRecursive(int xStart, int xEnd, int yStart, int yEnd) {
         this.xStart = xStart;
         this.xEnd = xEnd;
         this.yStart = yStart;
         this.yEnd = yEnd;
     }
 
-    public void render() {
+    private void render() {
         int width = image.length;
         int height = image[0].length;
 

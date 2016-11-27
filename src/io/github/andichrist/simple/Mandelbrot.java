@@ -5,12 +5,13 @@
  */
 package io.github.andichrist.simple;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.image.MemoryImageSource;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import org.apache.commons.math3.complex.Complex;
@@ -28,25 +29,37 @@ public class Mandelbrot extends JPanel {
 
     private final double seite = 2.5;
 
-    private final int breite = 800;
-    private final int höhe = 800;
+    private static final int breite = 800;
+    private static final int höhe = 800;
 
-    private final int[] bild = new int[breite * höhe];
     private final double spaltBreite = seite / breite;
     private final double spaltHöhe = seite / höhe;
 
     private final static int maxIterations = 30; // 1000
 
+    private static Image image;
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Mandelbrot m = new Mandelbrot();
-        m.berechne();
-        m.zeige();
+        JFrame window = new JFrame("Mandelbrot");
+        window.add(new Mandelbrot());
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        window.setSize(breite, höhe);
+        window.setVisible(true);
     }
 
-    private void berechne() {
+    public Mandelbrot() {
+        int[] bild = berechne();
+        image = getImageFromArray(bild, breite, höhe);
+
+        saveImage();
+    }
+
+    private int[] berechne() {
+        int[] bild = new int[breite * höhe];
+
         for (int m = 0; m < höhe; m++) {
             double im = bEcke + m * spaltHöhe;
             for (int n = 0; n < breite; n++) {
@@ -66,47 +79,40 @@ public class Mandelbrot extends JPanel {
                 bild[m * breite + n] = farbe(zähler);
             }
         }
+
+        return bild;
     }
 
     private int farbe(int zähler) {
-        //return ColorMap.getColor(zähler).getRGB();
         return Color.HSBtoRGB(0.5f * zähler / maxIterations, 1.0f, 1.0f);
-        // return new Color(zähler * 16777).getRGB();
-                /*
-         if (zähler < 2 || zähler > 1000) {
-         return Color.BLACK.getRGB();
-         } else if (zähler < 10) {
-         return Color.RED.getRGB();
-         } else if (zähler < 20) {
-         return Color.YELLOW.getRGB();
-         } else if (zähler < 30) {
-         return Color.BLUE.getRGB();
-         } else {
-         return Color.GREEN.getRGB();
-         }*/
-    }
-
-    private static Image image;
-
-    private void zeige() {
-        JFrame f = new JFrame("Mandelbrot");
-        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        image = getImageFromArray(bild, breite, höhe);
-        f.add(new Mandelbrot());
-        f.setSize(breite, höhe);
-        f.setVisible(true);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        if (image != null) {
-            g.drawImage(image, 0, 0, breite, höhe, this);
-        }
+        Graphics2D g2d = (Graphics2D) g.create();
+        //Paint it on screen
+        g2d.drawImage(image, 0, 0, breite, höhe, this);
+        g2d.dispose();
     }
 
     private Image getImageFromArray(int[] pixels, int width, int height) {
         MemoryImageSource mis = new MemoryImageSource(width, height, pixels, 0, width);
         Toolkit tk = Toolkit.getDefaultToolkit();
         return tk.createImage(mis);
+    }
+
+    private void saveImage() {
+        BufferedImage bufferedImage= new BufferedImage(
+                image.getWidth(this),
+                image.getHeight(this),
+                BufferedImage.TYPE_INT_RGB);
+        bufferedImage.getGraphics().drawImage(image,0,0, this);
+
+        File f = new File("./output.png");
+        try {
+            ImageIO.write(bufferedImage, "png", f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

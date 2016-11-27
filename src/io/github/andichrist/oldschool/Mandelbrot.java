@@ -1,26 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package io.github.andichrist.oldschool;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import javax.swing.*;
+
+import org.apache.commons.math3.complex.Complex;
+
 /**
+ * old school Mandelbrot set computation
  *
  * @author andichrist
  */
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import javax.swing.JFrame;
-import org.apache.commons.math3.complex.Complex;
-
 public class Mandelbrot extends JFrame {
 
     private final int MAX_ITERATION = 570;
     private final double ZOOM = 150;
 
     final private BufferedImage image;
-    private double newRe, newIm;
 
     private Complex z, c;
 
@@ -28,7 +24,7 @@ public class Mandelbrot extends JFrame {
         super("Mandelbrot Set");
         setBounds(100, 100, 800, 600);
         setResizable(false);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
 
         for (int y = 0; y < getHeight(); y++) {
@@ -37,8 +33,8 @@ public class Mandelbrot extends JFrame {
                 c = new Complex((x - 400) / ZOOM, (y - 300) / ZOOM);
                 int iteration = MAX_ITERATION;
                 while (z.getReal() * z.getReal() + z.getImaginary() * z.getImaginary() < 4 && iteration > 0) {
-                    newRe = z.getReal() * z.getReal() - z.getImaginary() * z.getImaginary() + c.getReal();
-                    newIm = 2.0 * z.getReal() * z.getImaginary() + c.getImaginary();
+                    double newRe = z.getReal() * z.getReal() - z.getImaginary() * z.getImaginary() + c.getReal();
+                    double newIm = 2.0 * z.getReal() * z.getImaginary() + c.getImaginary();
                     z = new Complex(newRe, newIm);
                     iteration--;
                 }

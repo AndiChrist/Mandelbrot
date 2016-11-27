@@ -24,22 +24,17 @@ public class ComputeMandelbrot implements ComputeFractal {
 
     private final static Logger LOGGER = Logger.getLogger(ComputeMandelbrot.class.getName());
 
-    static Complex min;
-    static Complex max;
+    private Complex min;
+    private Complex max;
 
-    static double infinity;
-    static int iteration;
-
-    public ComputeMandelbrot(Complex min, Complex max) {
-        ComputeMandelbrot.min = min;
-        ComputeMandelbrot.max = max;
-    }
+    private double infinity;
+    private int iteration;
 
     @Override
     @SuppressWarnings("UnusedAssignment")
     public void compute(int[][] image) {
 
-        Callable<int[][]> callable = new ComputeCallable(image);
+        Callable<int[][]> callable = new ComputeCallable(image, min, max, infinity, iteration);
         ExecutorService executor = Executors.newCachedThreadPool();
         Future<int[][]> result = executor.submit(callable);
 
@@ -52,12 +47,22 @@ public class ComputeMandelbrot implements ComputeFractal {
 
     @Override
     public void setInfinity(Double infinity) {
-        ComputeMandelbrot.infinity = infinity;
+        this.infinity = infinity;
     }
 
     @Override
     public void setIteration(Integer iteration) {
-        ComputeMandelbrot.iteration = iteration;
+        this.iteration = iteration;
+    }
+
+    @Override
+    public void setMin(Complex min) {
+        this.min = min;
+    }
+
+    @Override
+    public void setMax(Complex max) {
+        this.max = max;
     }
 
     private static class ComputeCallable implements Callable<int[][]> {
@@ -66,8 +71,18 @@ public class ComputeMandelbrot implements ComputeFractal {
 
         Complex c;
 
-        ComputeCallable(int[][] bild) {
+        private Complex min;
+        private Complex max;
+
+        private double infinity;
+        private int iteration;
+
+        ComputeCallable(int[][] bild, Complex min, Complex max, double infinity, int iteration) {
             this.bild = bild;
+            this.min = min;
+            this.max = max;
+            this.infinity = infinity;
+            this.iteration = iteration;
         }
 
         @Override

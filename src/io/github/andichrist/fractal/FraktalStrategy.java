@@ -6,6 +6,7 @@
 package io.github.andichrist.fractal;
 
 import io.github.andichrist.fractal.strategies.ComputeFractal;
+import org.apache.commons.math3.complex.Complex;
 
 /**
  *
@@ -37,4 +38,15 @@ class FraktalStrategy {
         }
     }
 
+    void setMin(Complex min) {
+        if (strategy != null) {
+            strategy.setMin(min);
+        }
+    }
+
+    void setMax(Complex max) {
+        if (strategy != null) {
+            strategy.setMax(max);
+        }
+    }
 }

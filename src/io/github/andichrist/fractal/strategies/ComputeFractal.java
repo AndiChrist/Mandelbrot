@@ -5,6 +5,8 @@
  */
 package io.github.andichrist.fractal.strategies;
 
+import org.apache.commons.math3.complex.Complex;
+
 /**
  *
  * @author Andreas Christ <andreas.christ@sixt.com>
@@ -16,5 +18,9 @@ public interface ComputeFractal {
     void setInfinity(Double infinity);
 
     void setIteration(Integer iteration);
+
+    void setMin(Complex min);
+
+    void setMax(Complex max);
 
 }

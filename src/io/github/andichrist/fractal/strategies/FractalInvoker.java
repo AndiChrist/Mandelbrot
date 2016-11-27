@@ -20,11 +20,6 @@ public class FractalInvoker implements ComputeFractal {
     static private double infinity;
     static private int iteration;
 
-    public FractalInvoker(Complex min, Complex max) {
-        FractalInvoker.min = min;
-        FractalInvoker.max = max;
-    }
-
     @Override
     public void compute(int[][] image) {
         ComputeMandelbrotRecursive task = new ComputeMandelbrotRecursive(image);
@@ -45,6 +40,16 @@ public class FractalInvoker implements ComputeFractal {
     @Override
     public void setIteration(Integer iteration) {
         FractalInvoker.iteration = iteration;
+    }
+
+    @Override
+    public void setMin(Complex min) {
+        FractalInvoker.min = min;
+    }
+
+    @Override
+    public void setMax(Complex max) {
+        FractalInvoker.max = max;
     }
 
 }

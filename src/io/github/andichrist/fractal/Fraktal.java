@@ -6,6 +6,7 @@
 package io.github.andichrist.fractal;
 
 import io.github.andichrist.common.PicturePanel;
+import io.github.andichrist.common.PropertyLoader;
 import io.github.andichrist.fractal.strategies.ComputeJulia;
 import io.github.andichrist.fractal.strategies.ComputeMandelbrot;
 import io.github.andichrist.fractal.strategies.FractalInvoker;
@@ -17,6 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.math3.complex.Complex;
 
+import static io.github.andichrist.common.PropertyLoader.*;
+
 /**
  *
  * @author Andreas Christ <andreas.christ@sixt.com>
@@ -24,11 +27,9 @@ import org.apache.commons.math3.complex.Complex;
 public class Fraktal {
 
     private final static Logger LOGGER = Logger.getLogger(Fraktal.class.getName());
-    private static final Properties prop = new Properties();
+
     private static final FraktalStrategy strategy = new FraktalStrategy();
-    
-    private static final String FRAKTAL = "fraktal.";
-    
+
     private Complex min;
     private Complex max;
     private int width;
@@ -41,38 +42,27 @@ public class Fraktal {
         LOGGER.info(System.getProperty("simple.message"));
         
         Fraktal fraktal = new Fraktal();
-        ClassLoader fraktalClassLoader = Fraktal.class.getClassLoader();
         
-        Properties typeProp = new Properties();
-        typeProp.load(fraktalClassLoader.getResourceAsStream("fraktal.properties"));
+        fraktal.setMin(readComplexProp("min.re", "min.im"));
+        fraktal.setMax(readComplexProp("max.re", "max.im"));
 
-        // read fractal type (mandelbrot, julia etc.)
-        String type = typeProp.getProperty("type");
-        LOGGER.log(Level.INFO, "Rendering stategy: {0}", type);
-        
-        // load special fractal properties
-        prop.load(fraktalClassLoader.getResourceAsStream(FRAKTAL + type + ".properties"));
-        
-        fraktal.setMin(readProp(prop, "min.re", "min.im"));
-        fraktal.setMax(readProp(prop, "max.re", "max.im"));
+        fraktal.setWidth(Integer.valueOf(getProperty("image.width")));
+        fraktal.setHeight(Integer.valueOf(getProperty("image.height")));
 
-        fraktal.setWidth(Integer.valueOf(prop.getProperty("image.width")));
-        fraktal.setHeight(Integer.valueOf(prop.getProperty("image.height")));
-
-        fraktal.setInfinity(Double.parseDouble(prop.getProperty("infinity")));
-        fraktal.setIteration(Integer.valueOf(prop.getProperty("max.iteration")));
+        fraktal.setInfinity(Double.parseDouble(getProperty("infinity")));
+        fraktal.setIteration(Integer.valueOf(getProperty("max.iteration")));
         
         // set rendering strategy
-        switch (type) {
+        switch (getProperty("type")) {
             case "mandelbrot":
-                strategy.setStrategy(new ComputeMandelbrot(fraktal.min, fraktal.max));
+                strategy.setStrategy(new ComputeMandelbrot());
                 break;
             case "julia":
-                Complex c = readProp(prop, "c.re", "c.im");
-                strategy.setStrategy(new ComputeJulia(fraktal.min, fraktal.max, c));
+                Complex c = readComplexProp("c.re", "c.im");
+                strategy.setStrategy(new ComputeJulia(c));
                 break;
             case "mandelbrottask":
-                strategy.setStrategy(new FractalInvoker(fraktal.min, fraktal.max));
+                strategy.setStrategy(new FractalInvoker());
                 break;
         }
         
@@ -87,6 +77,8 @@ public class Fraktal {
     private int[][] computeFractal() {
         int[][] image = new int[width][height];
 
+        strategy.setMin(min);
+        strategy.setMax(max);
         strategy.setInfinity(infinity);
         strategy.setIteration(iteration);
         strategy.compute(image);
@@ -97,15 +89,14 @@ public class Fraktal {
     /**
      * reads coordinate from property file
      * 
-     * @param prop Properties file name
      * @param re Real value
      * @param im Imaginary value
      * @return coordinate as complex object
      */
-    private static Complex readProp(Properties prop, String re, String im) {
-        Double minRe = Double.valueOf(prop.getProperty(re));
-        Double minIm = Double.valueOf(prop.getProperty(im));
-        return new Complex(minRe, minIm);
+    private static Complex readComplexProp(String re, String im) {
+        Double doubleRe = Double.valueOf(getProperty(re));
+        Double doubleIm = Double.valueOf(getProperty(im));
+        return new Complex(doubleRe, doubleIm);
     }
 
     private void setMin(Complex min) {

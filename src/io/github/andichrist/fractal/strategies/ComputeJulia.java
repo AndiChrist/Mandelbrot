@@ -32,9 +32,7 @@ public class ComputeJulia implements ComputeFractal {
 
     private static Complex c;
 
-    public ComputeJulia(Complex min, Complex max, Complex c) {
-        ComputeJulia.min = min;
-        ComputeJulia.max = max;
+    public ComputeJulia(Complex c) {
         ComputeJulia.c = c;
     }
 
@@ -60,6 +58,16 @@ public class ComputeJulia implements ComputeFractal {
     @Override
     public void setIteration(Integer iteration) {
         ComputeJulia.iteration = iteration;
+    }
+
+    @Override
+    public void setMin(Complex min) {
+        ComputeJulia.min = min;
+    }
+
+    @Override
+    public void setMax(Complex max) {
+        ComputeJulia.max = max;
     }
 
     private static class ComputeCallable implements Callable<int[][]> {

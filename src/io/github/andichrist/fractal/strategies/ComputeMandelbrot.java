@@ -6,6 +6,10 @@
 package io.github.andichrist.fractal.strategies;
 
 import io.github.andichrist.fractal.FractalIterator;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -20,15 +24,35 @@ import org.apache.commons.math3.complex.Complex;
  *
  * @author Andreas Christ <andreas.christ@sixt.com>
  */
-public class ComputeMandelbrot implements ComputeFractal {
+public class ComputeMandelbrot extends ComputeFractal {
 
     private final static Logger LOGGER = Logger.getLogger(ComputeMandelbrot.class.getName());
+
+    private static final String MANDELBROT_PROPERTIES = "mandelbrot.properties";
 
     private Complex min;
     private Complex max;
 
     private double infinity;
     private int iteration;
+
+    private Properties properties;
+
+    public ComputeMandelbrot() {
+        properties = new Properties();
+        try (FileInputStream fis = new FileInputStream(MANDELBROT_PROPERTIES)) {
+            properties.load(fis);
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        min = readComplexProp(properties.getProperty("min.re"), properties.getProperty("min.im"));
+        max = readComplexProp(properties.getProperty("max.re"), properties.getProperty("max.im"));
+
+        infinity = Double.parseDouble(properties.getProperty("infinity"));
+        iteration = Integer.valueOf(properties.getProperty("max.iteration"));
+    }
 
     @Override
     @SuppressWarnings("UnusedAssignment")
@@ -46,23 +70,13 @@ public class ComputeMandelbrot implements ComputeFractal {
     }
 
     @Override
-    public void setInfinity(Double infinity) {
-        this.infinity = infinity;
+    public int getWidth() {
+        return Integer.valueOf(properties.getProperty("image.width"));
     }
 
     @Override
-    public void setIteration(Integer iteration) {
-        this.iteration = iteration;
-    }
-
-    @Override
-    public void setMin(Complex min) {
-        this.min = min;
-    }
-
-    @Override
-    public void setMax(Complex max) {
-        this.max = max;
+    public int getHeight() {
+        return Integer.valueOf(properties.getProperty("image.height"));
     }
 
     private static class ComputeCallable implements Callable<int[][]> {

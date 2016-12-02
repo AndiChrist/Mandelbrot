@@ -6,6 +6,10 @@
 package io.github.andichrist.fractal.strategies;
 
 import io.github.andichrist.fractal.FractalIterator;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -20,9 +24,11 @@ import org.apache.commons.math3.complex.Complex;
  *
  * @author Andreas Christ <andreas.christ@sixt.com>
  */
-public class ComputeJulia implements ComputeFractal {
+public class ComputeJulia extends ComputeFractal {
 
     private static final Logger LOGGER = Logger.getLogger(ComputeJulia.class.getName());
+
+    private static final String JULIA_PROPERTIES = "julia.properties";
 
     static Complex min;
     static Complex max;
@@ -32,8 +38,23 @@ public class ComputeJulia implements ComputeFractal {
 
     private static Complex c;
 
-    public ComputeJulia(Complex c) {
-        ComputeJulia.c = c;
+    private Properties properties;
+
+    public ComputeJulia() {
+        properties = new Properties();
+        try (FileInputStream fis = new FileInputStream(JULIA_PROPERTIES)) {
+            properties.load(fis);
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ComputeJulia.c = readComplexProp(properties.getProperty("c.re"), properties.getProperty("c.im"));
+
+        min = readComplexProp(properties.getProperty("min.re"), properties.getProperty("min.im"));
+        max = readComplexProp(properties.getProperty("max.re"), properties.getProperty("max.im"));
+
+        infinity = Double.parseDouble(properties.getProperty("infinity"));
+        iteration = Integer.valueOf(properties.getProperty("max.iteration"));
     }
 
     @Override
@@ -51,23 +72,13 @@ public class ComputeJulia implements ComputeFractal {
     }
 
     @Override
-    public void setInfinity(Double infinity) {
-        ComputeJulia.infinity = infinity;
+    public int getWidth() {
+        return Integer.valueOf(properties.getProperty("image.width"));
     }
 
     @Override
-    public void setIteration(Integer iteration) {
-        ComputeJulia.iteration = iteration;
-    }
-
-    @Override
-    public void setMin(Complex min) {
-        ComputeJulia.min = min;
-    }
-
-    @Override
-    public void setMax(Complex max) {
-        ComputeJulia.max = max;
+    public int getHeight() {
+        return Integer.valueOf(properties.getProperty("image.height"));
     }
 
     private static class ComputeCallable implements Callable<int[][]> {

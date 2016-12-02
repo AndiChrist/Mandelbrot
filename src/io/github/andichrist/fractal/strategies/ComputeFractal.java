@@ -11,16 +11,25 @@ import org.apache.commons.math3.complex.Complex;
  *
  * @author Andreas Christ <andreas.christ@sixt.com>
  */
-public interface ComputeFractal {
+public abstract class ComputeFractal {
 
-    void compute(int[][] image);
+    public abstract void compute(int[][] image);
 
-    void setInfinity(Double infinity);
+    public abstract int getWidth();
 
-    void setIteration(Integer iteration);
+    public abstract int getHeight();
 
-    void setMin(Complex min);
 
-    void setMax(Complex max);
-
+    /**
+     * reads coordinate from property file
+     *
+     * @param re Real value
+     * @param im Imaginary value
+     * @return coordinate as complex object
+     */
+    Complex readComplexProp(String re, String im) {
+        Double doubleRe = Double.valueOf(re);
+        Double doubleIm = Double.valueOf(im);
+        return new Complex(doubleRe, doubleIm);
+    }
 }

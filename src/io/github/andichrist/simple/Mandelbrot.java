@@ -9,16 +9,14 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.MemoryImageSource;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.logging.Level;
+import java.util.Properties;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import io.github.andichrist.common.PropertyLoader;
 import org.apache.commons.math3.complex.Complex;
-
-import static io.github.andichrist.common.PropertyLoader.getProperty;
 
 /**
  *
@@ -26,7 +24,10 @@ import static io.github.andichrist.common.PropertyLoader.getProperty;
  */
 public class Mandelbrot extends JPanel {
 
-    private final static Logger LOGGER = Logger.getLogger(Mandelbrot.class.getName());
+    //private final static Logger LOGGER = Logger.getLogger(Mandelbrot.class.getName());
+
+    private static final String MANDELBROT_PROPERTIES = "mandelbrot.properties";
+
 
     private final Double aEcke;
     private final Double bEcke;
@@ -39,6 +40,8 @@ public class Mandelbrot extends JPanel {
     private final int maxIterations;
 
     private static Image image;
+
+    private Properties properties;
 
     /**
      * @param args the command line arguments
@@ -64,18 +67,26 @@ public class Mandelbrot extends JPanel {
 
     public Mandelbrot() {
 
-        int width = Integer.valueOf(getProperty("image.width"));
-        int height = Integer.valueOf(getProperty("image.height"));
+        properties = new Properties();
+        try (FileInputStream fis = new FileInputStream(MANDELBROT_PROPERTIES)) {
+            properties.load(fis);
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int width = Integer.valueOf(properties.getProperty("image.width"));
+        int height = Integer.valueOf(properties.getProperty("image.height"));
         this.setBounds(0, 0, width, height);
 
-        this.seite = Double.parseDouble(getProperty("seite"));
-        this.aEcke = Double.parseDouble(getProperty("aEcke"));
-        this.bEcke = Double.parseDouble(getProperty("bEcke"));
+        this.seite = Double.parseDouble(properties.getProperty("seite"));
+        this.aEcke = Double.parseDouble(properties.getProperty("aEcke"));
+        this.bEcke = Double.parseDouble(properties.getProperty("bEcke"));
 
         this.spaltBreite = this.seite / this.getWidth();
         this.spaltHöhe = this.seite / this.getHeight();
 
-        this.maxIterations = Integer.valueOf(getProperty("max.iteration"));
+        this.maxIterations = Integer.valueOf(properties.getProperty("max.iteration"));
     }
 
 

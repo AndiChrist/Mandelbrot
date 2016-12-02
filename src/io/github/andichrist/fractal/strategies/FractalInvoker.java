@@ -5,6 +5,9 @@
  */
 package io.github.andichrist.fractal.strategies;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.concurrent.ForkJoinPool;
 import org.apache.commons.math3.complex.Complex;
 
@@ -12,17 +15,39 @@ import org.apache.commons.math3.complex.Complex;
  *
  * @author Andreas Christ <andreas.christ@sixt.com>
  */
-public class FractalInvoker implements ComputeFractal {
+public class FractalInvoker extends ComputeFractal {
 
-    static private Complex min;
-    static private Complex max;
+    private static final String MANDELBROTTASK_PROPERTIES = "mandelbrottask.properties";
 
-    static private double infinity;
-    static private int iteration;
+    private static Complex min;
+    private static Complex max;
+
+    private static double infinity;
+    private static int iteration;
+
+    private Properties properties;
+
+    public FractalInvoker() {
+        properties = new Properties();
+        try (FileInputStream fis = new FileInputStream(MANDELBROTTASK_PROPERTIES)) {
+            properties.load(fis);
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        min = readComplexProp(properties.getProperty("min.re"), properties.getProperty("min.im"));
+        max = readComplexProp(properties.getProperty("max.re"), properties.getProperty("max.im"));
+
+        infinity = Double.parseDouble(properties.getProperty("infinity"));
+        iteration = Integer.valueOf(properties.getProperty("max.iteration"));
+
+    }
 
     @Override
     public void compute(int[][] image) {
         ComputeMandelbrotRecursive task = new ComputeMandelbrotRecursive(image);
+
         task.setMin(min);
         task.setMax(max);
         task.setInfinity(infinity);
@@ -33,23 +58,13 @@ public class FractalInvoker implements ComputeFractal {
     }
 
     @Override
-    public void setInfinity(Double infinity) {
-        FractalInvoker.infinity = infinity;
+    public int getWidth() {
+        return Integer.valueOf(properties.getProperty("image.width"));
     }
 
     @Override
-    public void setIteration(Integer iteration) {
-        FractalInvoker.iteration = iteration;
-    }
-
-    @Override
-    public void setMin(Complex min) {
-        FractalInvoker.min = min;
-    }
-
-    @Override
-    public void setMax(Complex max) {
-        FractalInvoker.max = max;
+    public int getHeight() {
+        return Integer.valueOf(properties.getProperty("image.height"));
     }
 
 }

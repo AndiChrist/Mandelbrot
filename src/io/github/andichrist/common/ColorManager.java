@@ -8,10 +8,10 @@ package io.github.andichrist.common;
 import java.awt.Color;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
+
 import org.apache.commons.math3.complex.Complex;
 
 /**
- *
  * @author Andreas Christ <andreas.christ@sixt.com>
  */
 public class ColorManager {
@@ -21,7 +21,10 @@ public class ColorManager {
     }
 
     public static int HSBtoRGB(int i, int maxIterationSteps) {
-        return Color.HSBtoRGB(0.5f * i / maxIterationSteps, 1.0f, 1.0f);
+        if (i >= maxIterationSteps)
+            return Color.BLACK.getRGB();
+        else
+            return Color.HSBtoRGB(1.0f * i / maxIterationSteps, 1.0f, 1.0f);
     }
 
     public static int hueColor(int i, Complex z) {
@@ -67,8 +70,8 @@ public class ColorManager {
 
     public static ColorModel createPalette8Colors(int limit) {
         Color[] colors = {Color.red, Color.green, Color.blue,
-            Color.cyan, Color.magenta, Color.yellow,
-            Color.white, Color.black};
+                Color.cyan, Color.magenta, Color.yellow,
+                Color.white, Color.black};
 
         byte[] red = new byte[limit];
         byte[] green = new byte[limit];
@@ -81,7 +84,7 @@ public class ColorManager {
         return new IndexColorModel(8, limit, red, green, blue);
     }
 
-    /*
+
     public static ColorModel createBlackWhite() {
         ColorModel cm = new IndexColorModel(1, 2,
                 new byte[]{(byte) 0, (byte) 255},
@@ -90,6 +93,5 @@ public class ColorManager {
 
         return cm;
     }
-    */
 
 }

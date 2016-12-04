@@ -11,11 +11,12 @@ import java.awt.image.MemoryImageSource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Properties;
+import java.util.*;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import io.github.andichrist.common.ColorManager;
 import org.apache.commons.math3.complex.Complex;
 
 /**
@@ -24,7 +25,7 @@ import org.apache.commons.math3.complex.Complex;
  */
 public class Mandelbrot extends JPanel {
 
-    //private final static Logger LOGGER = Logger.getLogger(Mandelbrot.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(Mandelbrot.class.getName());
 
     private static final String MANDELBROT_PROPERTIES = "mandelbrot.properties";
 
@@ -49,12 +50,11 @@ public class Mandelbrot extends JPanel {
     public static void main(String[] args) {
         Mandelbrot m = new Mandelbrot();
 
-        int[] bild = m.berechne();
+        int[] bild = m.compute();
         image = m.getImageFromArray(bild, m.getWidth(), m.getHeight());
 
         m.showImage();
         m.saveImage();
-
     }
 
     private void showImage() {
@@ -90,7 +90,7 @@ public class Mandelbrot extends JPanel {
     }
 
 
-    private int[] berechne() {
+    private int[] compute() {
         int[] bild = new int[getWidth() * getHeight()];
 
         for (int m = 0; m < getHeight(); m++) {
@@ -101,23 +101,25 @@ public class Mandelbrot extends JPanel {
                 Complex c = new Complex(re, im);
                 Complex z = Complex.ZERO;
 
-                int zähler = 0;
+                int count = 0;
 
-                do {
+                while (z.abs() <= 2.0 && count <= maxIterations) {
                     z = z.multiply(z).add(c);
-                    zähler++;
-                } while (z.abs() <= 2.0 && zähler <= maxIterations);
+                    count++;
+                }
 
-                // switch for color
-                bild[m * getWidth() + n] = farbe(zähler);
+                /*
+                 * Pixels for which the size of z reaches 2 after only a few iterations are colored red.
+                 * Pixels for which the size of z reaches 2 after relatively many iterations are colored violet,
+                 * at the other end of the spectrum.
+                 * Pixels for which the size of z is less than 2 even after 1,000 iterations are assumed to lie
+                 * in the Mandelbrot set; they are colored black.
+                 */
+                bild[m * getWidth() + n] = ColorManager.HSBtoRGB(count, maxIterations);
             }
         }
 
         return bild;
-    }
-
-    private int farbe(int zähler) {
-        return Color.HSBtoRGB(0.5f * zähler / maxIterations, 1.0f, 1.0f);
     }
 
     @Override

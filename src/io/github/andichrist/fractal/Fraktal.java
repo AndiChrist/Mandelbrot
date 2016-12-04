@@ -11,27 +11,37 @@ import io.github.andichrist.fractal.strategies.ComputeMandelbrot;
 import io.github.andichrist.fractal.strategies.FractalInvoker;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-import org.apache.commons.math3.complex.Complex;
 
 /**
- *
  * @author Andreas Christ <andreas.christ@sixt.com>
  */
 public class Fraktal {
 
-    private final static Logger LOGGER = Logger.getLogger(Fraktal.class.getName());
+    private static Logger LOGGER;
+
+    static {
+        try {
+            FileInputStream inputStream = new FileInputStream("logging.properties");
+            LogManager.getLogManager().readConfiguration(inputStream);
+            System.out.println("fis: " + inputStream.getFD().toString());
+
+        } catch (IOException e) {
+            Logger.getGlobal().log(Level.SEVERE, "init logging system", e);
+        }
+        LOGGER = Logger.getLogger(Fraktal.class.getName());
+
+        System.out.println("LOG LEVEL: " + LOGGER.getLevel());
+
+    }
 
     private static final FraktalStrategy strategy = new FraktalStrategy();
 
     public static void main(String[] args) throws IOException {
-
-        FileInputStream fis =  new FileInputStream("logging.properties");
-        LogManager.getLogManager().readConfiguration(fis);
-        System.out.println(LOGGER.getLevel());
 
         Fraktal fraktal = new Fraktal();
 
@@ -49,10 +59,10 @@ public class Fraktal {
                 strategy.setStrategy(new FractalInvoker());
                 break;
         }
-        
+
         // compute raw image data
         int[][] image = fraktal.computeFractal();
-        
+
         // show image
         new PicturePanel(image).display();
 

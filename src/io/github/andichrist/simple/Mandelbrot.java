@@ -61,8 +61,6 @@ public class Mandelbrot extends JPanel {
         window.add(this);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setSize(this.getWidth(), this.getHeight());
-        LOGGER.info("w3:" + this.getWidth());
-        LOGGER.info("h3:" + this.getHeight());
         window.setVisible(true);
     }
 

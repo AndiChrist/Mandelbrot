@@ -106,9 +106,8 @@ public class Mandelbrot extends JPanel {
 
                 int count = 0;
 
-                while (z.abs() <= infinity && count <= maxIterations) {
+                while (z.abs() <= infinity && count++ <= maxIterations) {
                     z = z.multiply(z).add(c);
-                    count++;
                 }
 
                 /*

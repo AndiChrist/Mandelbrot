@@ -30,14 +30,13 @@ public class Mandelbrot extends JPanel {
     private static final String MANDELBROT_PROPERTIES = "mandelbrot.properties";
 
 
-    private final Double aEcke;
-    private final Double bEcke;
+    private final Double aCorner;
+    private final Double bCorner;
 
-    private final double seite;
+    private final double sideWidth;
+    private final double sideHeight;
 
-    private final double spaltBreite;
-    private final double spaltHöhe;
-
+    private final double infinity;
     private final int maxIterations;
 
     private static Image image;
@@ -50,8 +49,8 @@ public class Mandelbrot extends JPanel {
     public static void main(String[] args) {
         Mandelbrot m = new Mandelbrot();
 
-        int[] bild = m.compute();
-        image = m.getImageFromArray(bild, m.getWidth(), m.getHeight());
+        int[] pic = m.compute();
+        image = m.getImageFromArray(pic, m.getWidth(), m.getHeight());
 
         m.showImage();
         m.saveImage();
@@ -62,6 +61,8 @@ public class Mandelbrot extends JPanel {
         window.add(this);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setSize(this.getWidth(), this.getHeight());
+        LOGGER.info("w3:" + this.getWidth());
+        LOGGER.info("h3:" + this.getHeight());
         window.setVisible(true);
     }
 
@@ -77,33 +78,37 @@ public class Mandelbrot extends JPanel {
 
         int width = Integer.valueOf(properties.getProperty("image.width"));
         int height = Integer.valueOf(properties.getProperty("image.height"));
+
         this.setBounds(0, 0, width, height);
 
-        this.seite = Double.parseDouble(properties.getProperty("seite"));
-        this.aEcke = Double.parseDouble(properties.getProperty("aEcke"));
-        this.bEcke = Double.parseDouble(properties.getProperty("bEcke"));
+        this.aCorner = Double.parseDouble(properties.getProperty("min.re"));
+        this.bCorner = Double.parseDouble(properties.getProperty("min.im"));
+        double maxRe = Double.parseDouble(properties.getProperty("max.re"));
+        double maxIm = Double.parseDouble(properties.getProperty("max.im"));
 
-        this.spaltBreite = this.seite / this.getWidth();
-        this.spaltHöhe = this.seite / this.getHeight();
 
+        this.sideWidth = (maxRe - aCorner) / width;
+        this.sideHeight = (maxIm - bCorner) / height;
+
+        this.infinity = Double.parseDouble(properties.getProperty("infinity"));
         this.maxIterations = Integer.valueOf(properties.getProperty("max.iteration"));
     }
 
 
     private int[] compute() {
-        int[] bild = new int[getWidth() * getHeight()];
+        int[] pic = new int[getWidth() * getHeight()];
 
         for (int m = 0; m < getHeight(); m++) {
-            double im = bEcke + m * spaltHöhe;
+            double im = bCorner + m * sideHeight;
             for (int n = 0; n < getWidth(); n++) {
-                double re = aEcke + n * spaltBreite;
+                double re = aCorner + n * sideWidth;
 
                 Complex c = new Complex(re, im);
                 Complex z = Complex.ZERO;
 
                 int count = 0;
 
-                while (z.abs() <= 2.0 && count <= maxIterations) {
+                while (z.abs() <= infinity && count <= maxIterations) {
                     z = z.multiply(z).add(c);
                     count++;
                 }
@@ -115,11 +120,11 @@ public class Mandelbrot extends JPanel {
                  * Pixels for which the size of z is less than 2 even after 1,000 iterations are assumed to lie
                  * in the Mandelbrot set; they are colored black.
                  */
-                bild[m * getWidth() + n] = ColorManager.HSBtoRGB(count, maxIterations);
+                pic[m * getWidth() + n] = ColorManager.HSBtoRGB(count, maxIterations);
             }
         }
 
-        return bild;
+        return pic;
     }
 
     @Override
@@ -137,11 +142,12 @@ public class Mandelbrot extends JPanel {
     }
 
     private void saveImage() {
-        BufferedImage bufferedImage= new BufferedImage(
-                getWidth(),
-                getHeight(),
+        BufferedImage bufferedImage = new BufferedImage(
+                image.getWidth(this),
+                image.getHeight(this),
                 BufferedImage.TYPE_INT_RGB);
-        bufferedImage.getGraphics().drawImage(image,0,0, this);
+
+        bufferedImage.getGraphics().drawImage(image,0,0, image.getWidth(this), image.getHeight(this), this);
 
         File f = new File("./output.png");
         try {

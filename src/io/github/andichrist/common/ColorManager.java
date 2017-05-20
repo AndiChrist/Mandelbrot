@@ -16,10 +16,6 @@ import org.apache.commons.math3.complex.Complex;
  */
 public class ColorManager {
 
-    public static int getMap(int i) {
-        return ColorMap.getColor(i).getRGB();
-    }
-
     public static int HSBtoRGB(int i, int maxIterationSteps) {
         if (i >= maxIterationSteps)
             return Color.BLACK.getRGB();
@@ -86,12 +82,11 @@ public class ColorManager {
 
 
     public static ColorModel createBlackWhite() {
-        ColorModel cm = new IndexColorModel(1, 2,
+
+        return new IndexColorModel(1, 2,
                 new byte[]{(byte) 0, (byte) 255},
                 new byte[]{(byte) 0, (byte) 255},
                 new byte[]{(byte) 0, (byte) 255});
-
-        return cm;
     }
 
 }

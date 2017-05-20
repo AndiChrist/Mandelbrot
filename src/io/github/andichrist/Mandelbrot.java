@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.github.andichrist.simple;
+package io.github.andichrist;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import io.github.andichrist.common.ColorManager;
+import io.github.andichrist.common.RainbowColor;
 import org.apache.commons.math3.complex.Complex;
 
 /**
@@ -50,14 +50,24 @@ public class Mandelbrot extends JPanel {
         Mandelbrot m = new Mandelbrot();
 
         int[] pic = m.compute();
+        pic = filter(pic, m.maxIterations);
         image = m.getImageFromArray(pic, m.getWidth(), m.getHeight());
 
         m.showImage();
         m.saveImage();
     }
 
+    private static int[] filter(int[] pic, int maxIterations) {
+        int[] coloredImage = new int[pic.length];
+        for (int i=0; i<pic.length; i++) {
+            coloredImage[i] = RainbowColor.color(pic[i], maxIterations);
+        }
+
+        return coloredImage;
+    }
+
     private void showImage() {
-        JFrame window = new JFrame("Mandelbrot");
+        JFrame window = new JFrame("MandelbrotOldSchool");
         window.add(this);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setSize(this.getWidth(), this.getHeight());
@@ -115,9 +125,9 @@ public class Mandelbrot extends JPanel {
                  * Pixels for which the size of z reaches 2 after relatively many iterations are colored violet,
                  * at the other end of the spectrum.
                  * Pixels for which the size of z is less than 2 even after 1,000 iterations are assumed to lie
-                 * in the Mandelbrot set; they are colored black.
+                 * in the MandelbrotOldSchool set; they are colored black.
                  */
-                pic[m * getWidth() + n] = ColorManager.HSBtoRGB(count, maxIterations);
+                pic[m * getWidth() + n] = count;
             }
         }
 

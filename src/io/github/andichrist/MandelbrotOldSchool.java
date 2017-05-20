@@ -1,4 +1,4 @@
-package io.github.andichrist.oldschool;
+package io.github.andichrist;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -7,11 +7,11 @@ import javax.swing.*;
 import org.apache.commons.math3.complex.Complex;
 
 /**
- * old school Mandelbrot set computation
+ * old school MandelbrotOldSchool set computation
  *
  * @author andichrist
  */
-public class Mandelbrot extends JFrame {
+public class MandelbrotOldSchool extends JFrame {
 
     private final int MAX_ITERATION = 570;
     private final double ZOOM = 150;
@@ -20,8 +20,8 @@ public class Mandelbrot extends JFrame {
 
     private Complex z, c;
 
-    public Mandelbrot() {
-        super("Mandelbrot Set");
+    private MandelbrotOldSchool() {
+        super("MandelbrotOldSchool Set");
         setBounds(100, 100, 800, 600);
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -49,6 +49,6 @@ public class Mandelbrot extends JFrame {
     }
 
     public static void main(String[] args) {
-        new Mandelbrot().setVisible(true);
+        new MandelbrotOldSchool().setVisible(true);
     }
 }

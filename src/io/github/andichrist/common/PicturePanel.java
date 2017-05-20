@@ -41,35 +41,7 @@ public class PicturePanel extends JPanel {
         source = new MemoryImageSource(picWidth, picHeight, model, pixels, 0, picWidth);
         this.image = createImage(source);
 
-        myObserver = (Image img, int infoflags, int x, int y, int width, int height) -> {
-            /*
-            if ((infoflags & WIDTH) != 0) {
-                LOGGER.log(Level.INFO, "Image width = {0}", width);
-            }
-            if ((infoflags & HEIGHT) != 0) {
-                LOGGER.log(Level.INFO, "Image height = {0}", height);
-            }
-            if ((infoflags & PROPERTIES) != 0) {
-                LOGGER.log(Level.INFO, "Image properties....");
-            }
-            if ((infoflags & SOMEBITS) != 0) {
-                LOGGER.log(Level.INFO, "Image section :{0}", new Rectangle(x, y, width, height));
-            }
-            if ((infoflags & FRAMEBITS) != 0) {
-                LOGGER.log(Level.INFO, "Another frame finished.");
-            }
-            if ((infoflags & ALLBITS) != 0) {
-                LOGGER.log(Level.INFO, "Image finished!");
-            }
-            if ((infoflags & ERROR) != 0) {
-                LOGGER.log(Level.INFO, "Image error!!");
-            }
-            if ((infoflags & ABORT) != 0) {
-                LOGGER.log(Level.INFO, "Image load aborted...");
-            }
-            */
-            return true;
-        };
+        myObserver = (Image img, int infoflags, int x, int y, int width, int height) -> true;
     }
 
     @Override
@@ -85,7 +57,7 @@ public class PicturePanel extends JPanel {
         int height = image.getHeight(myObserver);
 
         JFrame f = new JFrame();
-        f.setTitle("Mandelbrot " + width + "x" + height);
+        f.setTitle("MandelbrotOldSchool " + width + "x" + height);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setContentPane(this);
         f.setSize(width, height);

@@ -12,19 +12,19 @@ import org.apache.commons.math3.complex.Complex;
  *
  * @author Andreas Christ <andreas.christ@sixt.com>
  */
-class FraktalStrategy {
+public class FraktalStrategy {
 
     private ComputeFractal strategy = null;
 
-    void setStrategy(final ComputeFractal strategy) {
+    public void setStrategy(final ComputeFractal strategy) {
         this.strategy = strategy;
     }
 
-    ComputeFractal getStrategy() {
+    public ComputeFractal getStrategy() {
         return this.strategy;
     }
 
-    void compute(int[][] image) {
+    public void compute(int[][] image) {
         strategy.compute(image);
     }
 

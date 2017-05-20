@@ -22,7 +22,7 @@ public class MandelbrotTask extends RecursiveAction {
     private final int xStart, xEnd, yStart, yEnd;
     private final static int taskSplitThreshold = 1024;
 
-    MandelbrotTask(int[][] image, int xStart, int xEnd, int yStart, int yEnd) {
+    public MandelbrotTask(int[][] image, int xStart, int xEnd, int yStart, int yEnd) {
         this.image = image;
         this.xStart = xStart;
         this.xEnd = xEnd;

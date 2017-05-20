@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.github.andichrist.fractal;
+package io.github.andichrist;
 
 import io.github.andichrist.common.PicturePanel;
+import io.github.andichrist.fractal.FraktalStrategy;
 import io.github.andichrist.fractal.strategies.ComputeJulia;
 import io.github.andichrist.fractal.strategies.ComputeMandelbrot;
 import io.github.andichrist.fractal.strategies.FractalInvoker;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.LogManager;

@@ -3,16 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.github.andichrist.thread;
+package io.github.andichrist;
 
 import io.github.andichrist.common.PicturePanel;
+import io.github.andichrist.thread.MandelbrotTask;
+
 import java.util.concurrent.ForkJoinPool;
 
 /**
  *
  * @author Andreas Christ <andreas.christ@sixt.com>
  */
-public class Mandelbrot {
+public class MandelbrotThread {
 
     private static final int WIDTH = 768;
     private static final int HEIGHT = 768;

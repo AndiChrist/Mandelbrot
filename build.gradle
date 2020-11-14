@@ -12,22 +12,32 @@ plugins {
 
     // Apply the application plugin to add support for building an application
     id 'application'
-
-    id 'idea'
 }
 
 // Define the main class for the application
 mainClassName = 'io.github.andichrist.Mandelbrot'
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(15)
+    }
+}
+
 dependencies {
-    // This dependency is found on compile classpath of this component and consumers.
-    compile 'com.google.guava:guava:23.0'
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    implementation (group: 'com.google.guava', name: 'guava', version: '30.0-jre') {
+        because("this dependency is found on compile classpath of this component and consumers")
+    }
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-math3
-    compile group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+    implementation (group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1') {
+        because("this dependency is for mathematical computations")
+    }
 
-    // Use JUnit test framework
-    testCompile 'junit:junit:4.12'
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    testImplementation (group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0') {
+        because("we want to use JUnit 5 test framework")
+    }
 }
 
 // In this section you declare where to find the dependencies of your project

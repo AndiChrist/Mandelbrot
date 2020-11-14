@@ -5,11 +5,7 @@
  */
 package io.github.andichrist.common;
 
-import org.apache.commons.math3.complex.Complex;
-
-import java.awt.*;
-import java.awt.image.ColorModel;
-import java.awt.image.IndexColorModel;
+import java.awt.Color;
 
 /**
  * @author Andreas Christ <andreas.christ@sixt.com>

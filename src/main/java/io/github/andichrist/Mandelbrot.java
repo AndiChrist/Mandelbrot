@@ -41,8 +41,6 @@ public class Mandelbrot extends JPanel {
 
     private static Image image;
 
-    private Properties properties;
-
     /**
      * @param args the command line arguments
      */
@@ -76,16 +74,15 @@ public class Mandelbrot extends JPanel {
 
     public Mandelbrot() {
 
-        properties = new Properties();
+        Properties properties = new Properties();
         try (FileInputStream fis = new FileInputStream(MANDELBROT_PROPERTIES)) {
             properties.load(fis);
-            fis.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        int width = Integer.valueOf(properties.getProperty("image.width"));
-        int height = Integer.valueOf(properties.getProperty("image.height"));
+        int width = Integer.parseInt(properties.getProperty("image.width"));
+        int height = Integer.parseInt(properties.getProperty("image.height"));
 
         this.setBounds(0, 0, width, height);
 
@@ -99,7 +96,7 @@ public class Mandelbrot extends JPanel {
         this.sideHeight = (maxIm - bCorner) / height;
 
         this.infinity = Double.parseDouble(properties.getProperty("infinity"));
-        this.maxIterations = Integer.valueOf(properties.getProperty("max.iteration"));
+        this.maxIterations = Integer.parseInt(properties.getProperty("max.iteration"));
     }
 
 

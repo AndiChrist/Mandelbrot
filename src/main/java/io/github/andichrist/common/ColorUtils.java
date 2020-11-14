@@ -1,5 +1,7 @@
 package io.github.andichrist.common;
 
+import io.github.andichrist.Mandelbrot;
+import java.util.logging.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -9,6 +11,9 @@ import java.util.List;
  * Created by andichrist on 09.12.16.
  */
 public class ColorUtils {
+
+    private final static Logger LOGGER = Logger.getLogger(ColorUtils.class.getName());
+
     /**
      * Return a color that blends into the background. i.e. mix(color,contrast(color),0.5)
      */
@@ -121,10 +126,10 @@ public class ColorUtils {
     static Color[] getColorGradient(int maxSteps, Color... colors) {
         int sections = colors.length - 1;
 
-        System.out.println(sections);
-        System.out.println(maxSteps);
-        System.out.println(maxSteps/sections);
-        System.out.println((int) Math.ceil(1.0 * maxSteps / sections));
+        LOGGER.info("sections: " + sections);
+        LOGGER.info("maxSteps: " + maxSteps);
+        LOGGER.info("maxSteps/sections: " + maxSteps/sections);
+        LOGGER.info("ceil: " + (int) Math.ceil(1.0 * maxSteps / sections));
 
         if (sections <= 0)
             throw new IllegalArgumentException("At least 2 colors required.");
@@ -137,7 +142,7 @@ public class ColorUtils {
 
             gradient.addAll(Arrays.asList(nextGradient));
         }
-        System.out.println(gradient.size());
+        LOGGER.info("gradient.size(): " + gradient.size());
         return gradient.toArray(new Color[0]);
     }
 

@@ -10,9 +10,8 @@ import io.github.andichrist.fractal.FraktalStrategy;
 import io.github.andichrist.fractal.strategies.ComputeJulia;
 import io.github.andichrist.fractal.strategies.ComputeMandelbrot;
 import io.github.andichrist.fractal.strategies.FractalInvoker;
-
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -22,13 +21,11 @@ import java.util.logging.Logger;
  */
 public class Fraktal {
 
-    private static Logger LOGGER;
+    private static final Logger LOGGER;
 
     static {
-        try {
-            FileInputStream inputStream = new FileInputStream("logging.properties");
+        try (InputStream inputStream = Fraktal.class.getClassLoader().getResourceAsStream("logging.properties")) {
             LogManager.getLogManager().readConfiguration(inputStream);
-            System.out.println("fis: " + inputStream.getFD().toString());
 
         } catch (IOException e) {
             Logger.getGlobal().log(Level.SEVERE, "init logging system", e);
@@ -41,7 +38,7 @@ public class Fraktal {
 
     private static final FraktalStrategy strategy = new FraktalStrategy();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         Fraktal fraktal = new Fraktal();
 
@@ -49,15 +46,9 @@ public class Fraktal {
         LOGGER.info("render " + type);
         // set rendering strategy
         switch (type) {
-            case "mandelbrot":
-                strategy.setStrategy(new ComputeMandelbrot());
-                break;
-            case "julia":
-                strategy.setStrategy(new ComputeJulia());
-                break;
-            case "mandelbrottask":
-                strategy.setStrategy(new FractalInvoker());
-                break;
+            case "mandelbrot" -> strategy.setStrategy(new ComputeMandelbrot());
+            case "julia" -> strategy.setStrategy(new ComputeJulia());
+            case "mandelbrottask" -> strategy.setStrategy(new FractalInvoker());
         }
 
         // compute raw image data

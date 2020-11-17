@@ -6,9 +6,8 @@
 package io.github.andichrist.fractal.strategies;
 
 import io.github.andichrist.fractal.FractalIterator;
-
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -30,19 +29,18 @@ public class ComputeMandelbrot extends ComputeFractal {
 
     private static final String MANDELBROT_PROPERTIES = "mandelbrot.properties";
 
-    private Complex min;
-    private Complex max;
+    private final Complex min;
+    private final Complex max;
 
-    private double infinity;
-    private int iteration;
+    private final double infinity;
+    private final int iteration;
 
-    private Properties properties;
+    private final Properties properties;
 
     public ComputeMandelbrot() {
         properties = new Properties();
-        try (FileInputStream fis = new FileInputStream(MANDELBROT_PROPERTIES)) {
+        try (InputStream fis = ComputeMandelbrot.class.getClassLoader().getResourceAsStream(MANDELBROT_PROPERTIES)) {
             properties.load(fis);
-            fis.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,7 +49,7 @@ public class ComputeMandelbrot extends ComputeFractal {
         max = readComplexProp(properties.getProperty("max.re"), properties.getProperty("max.im"));
 
         infinity = Double.parseDouble(properties.getProperty("infinity"));
-        iteration = Integer.valueOf(properties.getProperty("max.iteration"));
+        iteration = Integer.parseInt(properties.getProperty("max.iteration"));
     }
 
     @Override
@@ -71,12 +69,12 @@ public class ComputeMandelbrot extends ComputeFractal {
 
     @Override
     public int getWidth() {
-        return Integer.valueOf(properties.getProperty("image.width"));
+        return Integer.parseInt(properties.getProperty("image.width"));
     }
 
     @Override
     public int getHeight() {
-        return Integer.valueOf(properties.getProperty("image.height"));
+        return Integer.parseInt(properties.getProperty("image.height"));
     }
 
     private static class ComputeCallable implements Callable<int[][]> {
@@ -85,11 +83,11 @@ public class ComputeMandelbrot extends ComputeFractal {
 
         Complex c;
 
-        private Complex min;
-        private Complex max;
+        private final Complex min;
+        private final Complex max;
 
-        private double infinity;
-        private int iteration;
+        private final double infinity;
+        private final int iteration;
 
         ComputeCallable(int[][] bild, Complex min, Complex max, double infinity, int iteration) {
             this.bild = bild;
@@ -100,7 +98,7 @@ public class ComputeMandelbrot extends ComputeFractal {
         }
 
         @Override
-        public int[][] call() throws Exception {
+        public int[][] call() {
             int imageWidth = bild.length;
             int imageHeight = bild[0].length;
             

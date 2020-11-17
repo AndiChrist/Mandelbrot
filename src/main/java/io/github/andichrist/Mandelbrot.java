@@ -1,22 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package io.github.andichrist;
 
-import java.awt.*;
+import io.github.andichrist.common.RainbowColor;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.MemoryImageSource;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.*;
-
-import io.github.andichrist.common.RainbowColor;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import org.apache.commons.math3.complex.Complex;
 
 /**
@@ -75,7 +74,7 @@ public class Mandelbrot extends JPanel {
     public Mandelbrot() {
 
         Properties properties = new Properties();
-        try (FileInputStream fis = new FileInputStream(MANDELBROT_PROPERTIES)) {
+        try (InputStream fis = Mandelbrot.class.getClassLoader().getResourceAsStream(MANDELBROT_PROPERTIES)) {
             properties.load(fis);
         } catch (IOException e) {
             e.printStackTrace();

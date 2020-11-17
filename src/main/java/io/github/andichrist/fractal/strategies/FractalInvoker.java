@@ -5,8 +5,8 @@
  */
 package io.github.andichrist.fractal.strategies;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.concurrent.ForkJoinPool;
 import org.apache.commons.math3.complex.Complex;
@@ -25,13 +25,12 @@ public class FractalInvoker extends ComputeFractal {
     private static double infinity;
     private static int iteration;
 
-    private Properties properties;
+    private final Properties properties;
 
     public FractalInvoker() {
         properties = new Properties();
-        try (FileInputStream fis = new FileInputStream(MANDELBROTTASK_PROPERTIES)) {
+        try (InputStream fis = FractalInvoker.class.getClassLoader().getResourceAsStream(MANDELBROTTASK_PROPERTIES)) {
             properties.load(fis);
-            fis.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,7 +39,7 @@ public class FractalInvoker extends ComputeFractal {
         max = readComplexProp(properties.getProperty("max.re"), properties.getProperty("max.im"));
 
         infinity = Double.parseDouble(properties.getProperty("infinity"));
-        iteration = Integer.valueOf(properties.getProperty("max.iteration"));
+        iteration = Integer.parseInt(properties.getProperty("max.iteration"));
 
     }
 
@@ -59,12 +58,12 @@ public class FractalInvoker extends ComputeFractal {
 
     @Override
     public int getWidth() {
-        return Integer.valueOf(properties.getProperty("image.width"));
+        return Integer.parseInt(properties.getProperty("image.width"));
     }
 
     @Override
     public int getHeight() {
-        return Integer.valueOf(properties.getProperty("image.height"));
+        return Integer.parseInt(properties.getProperty("image.height"));
     }
 
 }

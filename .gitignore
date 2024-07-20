@@ -1,5 +1,23 @@
+# Gradle
+.gradle
+
+# Java & InteliJ
+.idea
+*.iml
+build
+history
+target
+out
+*.log
+
+# misc
+.settings
+*.png
+
+# MacOS
 .DS_Store
-.idea/
-.gradle/
-build/
-output.png
+
+# buildSrc: IntelliJ creates Gradle files (not used!)
+/buildSrc/gradlew
+/buildSrc/gradlew.bat
+/buildSrc/gradle/

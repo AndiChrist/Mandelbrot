@@ -21,11 +21,10 @@ public class Main extends JPanel {
     int width = 800;
     int height = 800;
     int maxIteration = 300;
-    double infinity = 2.0;
 
     Context context = new Context();
 
-    context.setStrategy(new Mandelbrot(width, height, maxIteration, infinity));
+    context.setStrategy(new Mandelbrot(width, height, maxIteration));
 
     var pic = context.compute();
     pic = filter(pic, maxIteration);

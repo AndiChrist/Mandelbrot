@@ -30,9 +30,8 @@ public class Julia implements FractalStrategy {
 
     private final int width;
     private final int height;
-    private final double infinity;
 
-    public Julia(int width, int height, int maxIterations, double infinity) {
+    public Julia(int width, int height, int maxIterations) {
         Properties properties = new Properties();
         try (InputStream fis = Julia.class.getClassLoader().getResourceAsStream(MANDELBROT_PROPERTIES)) {
             properties.load(fis);
@@ -43,7 +42,6 @@ public class Julia implements FractalStrategy {
         this.width = width;
         this.height = height;
         this.maxIterations = maxIterations;
-        this.infinity = infinity;
 
         this.aCorner = Double.parseDouble(properties.getProperty("min.re"));
         this.bCorner = Double.parseDouble(properties.getProperty("min.im"));
@@ -75,17 +73,10 @@ public class Julia implements FractalStrategy {
 
                 int iteration = 0;
 
-                while (z.abs() <= infinity && iteration++ <= maxIterations) {
+                while (z.abs() <= 2.0 && iteration++ <= maxIterations) {
                     z = z.multiply(z).add(c);
                 }
 
-                /*
-                 * Pixels for which the size of z reaches 2 after only a few iterations are colored red.
-                 * Pixels for which the size of z reaches 2 after relatively many iterations are colored violet,
-                 * at the other end of the spectrum.
-                 * Pixels for which the size of z is less than 2 even after 1,000 iterations are assumed to lie
-                 * in the MandelbrotOldSchool set; they are colored black.
-                 */
                 pic[m * width + n] = iteration;
             }
         }

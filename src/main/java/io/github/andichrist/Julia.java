@@ -12,6 +12,7 @@ import java.util.logging.Logger;
  *
  * @author Andreas Christ <andichrist@gmx.de>
  */
+@SuppressWarnings("unused")
 public class Julia implements FractalStrategy {
 
     private final static Logger LOG = Logger.getLogger(Julia.class.getName());

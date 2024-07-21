@@ -1,30 +1,18 @@
 package io.github.andichrist;
 
-import io.github.andichrist.common.RainbowColor;
 import io.github.andichrist.math.Complex;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.awt.image.MemoryImageSource;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 
 /**
  *
  * @author Andreas Christ <andichrist@gmx.de>
  */
-public class Mandelbrot extends JPanel {
+public class Mandelbrot implements FractalStrategy {
 
     private final static Logger LOG = Logger.getLogger(Mandelbrot.class.getName());
 
@@ -36,45 +24,13 @@ public class Mandelbrot extends JPanel {
     private final double sideWidth;
     private final double sideHeight;
 
-    private final double infinity;
+
+    private final int width;
+    private final int height;
     private final int maxIterations;
+    private final double infinity;
 
-    private static Image image;
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        Mandelbrot m = new Mandelbrot();
-
-        int[] pic = m.compute();
-        pic = filter(pic, m.maxIterations);
-        image = m.getImageFromArray(pic, m.getWidth(), m.getHeight());
-
-        m.showImage();
-        m.saveImage();
-    }
-
-    private static int[] filter(int[] pic, int maxIterations) {
-        new RainbowColor(pic, maxIterations);
-
-        var coloredImage = new int[pic.length];
-        for (int i = 0; i < pic.length; i++) {
-            coloredImage[i] = RainbowColor.color(pic[i], maxIterations);
-        }
-
-        return coloredImage;
-    }
-
-    private void showImage() {
-        JFrame window = new JFrame("MandelbrotOldSchool");
-        window.add(this);
-        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        window.setSize(this.getWidth(), this.getHeight());
-        window.setVisible(true);
-    }
-
-    public Mandelbrot() {
+    public Mandelbrot(int width, int height, int maxIterations, double infinity) {
         Properties properties = new Properties();
         try (InputStream fis = Mandelbrot.class.getClassLoader().getResourceAsStream(MANDELBROT_PROPERTIES)) {
             properties.load(fis);
@@ -82,10 +38,10 @@ public class Mandelbrot extends JPanel {
             LOG.log(Level.WARNING, "Failed to load properties file", e);
         }
 
-        int width = Integer.parseInt(properties.getProperty("image.width"));
-        int height = Integer.parseInt(properties.getProperty("image.height"));
-
-        this.setBounds(0, 0, width, height);
+        this.width = width;
+        this.height = height;
+        this.maxIterations = maxIterations;
+        this.infinity = infinity;
 
         this.aCorner = Double.parseDouble(properties.getProperty("min.re"));
         this.bCorner = Double.parseDouble(properties.getProperty("min.im"));
@@ -94,20 +50,17 @@ public class Mandelbrot extends JPanel {
 
         this.sideWidth = (maxRe - aCorner) / width;
         this.sideHeight = (maxIm - bCorner) / height;
-
-        this.infinity = Double.parseDouble(properties.getProperty("infinity"));
-        this.maxIterations = Integer.parseInt(properties.getProperty("max.iteration"));
     }
 
     /**
      * Z(n+1) = Zn^2 + C
      */
-    private int[] compute() {
-        var pic = new int[getWidth() * getHeight()];
+    public int[] compute() {
+        var pic = new int[width * height];
 
-        for (int m = 0; m < getHeight(); m++) {
+        for (int m = 0; m < height; m++) {
             double im = bCorner + m * sideHeight;
-            for (int n = 0; n < getWidth(); n++) {
+            for (int n = 0; n < width; n++) {
                 double re = aCorner + n * sideWidth;
 
                 Complex c = new Complex(re, im);
@@ -126,40 +79,10 @@ public class Mandelbrot extends JPanel {
                  * Pixels for which the size of z is less than 2 even after 1,000 iterations are assumed to lie
                  * in the MandelbrotOldSchool set; they are colored black.
                  */
-                pic[m * getWidth() + n] = iteration;
+                pic[m * width + n] = iteration;
             }
         }
 
         return pic;
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        var g2d = (Graphics2D) g.create();
-        //Paint it on screen
-        g2d.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-        g2d.dispose();
-    }
-
-    private Image getImageFromArray(int[] pixels, int width, int height) {
-        var mis = new MemoryImageSource(width, height, pixels, 0, width);
-        var tk = Toolkit.getDefaultToolkit();
-        return tk.createImage(mis);
-    }
-
-    private void saveImage() {
-        var bufferedImage = new BufferedImage(
-                image.getWidth(this),
-                image.getHeight(this),
-                BufferedImage.TYPE_INT_RGB);
-
-        bufferedImage.getGraphics().drawImage(image,0,0, image.getWidth(this), image.getHeight(this), this);
-
-        File f = new File("./output.png");
-        try {
-            ImageIO.write(bufferedImage, "png", f);
-        } catch (IOException e) {
-            LOG.log(Level.WARNING, "Failed to write PNG file", e);
-        }
     }
 }

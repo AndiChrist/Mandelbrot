@@ -16,8 +16,6 @@ public class Main extends JPanel {
 
   private final static Logger LOG = Logger.getLogger(Main.class.getName());
 
-  private static Image image;
-
   public static void main(String[] args) {
     // Breite und Höhe des Bildes
     int width = 800;
@@ -27,7 +25,7 @@ public class Main extends JPanel {
 
     Context context = new Context();
 
-    context.setStrategy(new Julia(width, height, maxIteration, infinity));
+    context.setStrategy(new Mandelbrot(width, height, maxIteration, infinity));
 
     var pic = context.compute();
     pic = filter(pic, maxIteration);
@@ -55,28 +53,18 @@ public class Main extends JPanel {
 
   private static void showImage(BufferedImage bufferedImage, int width, int height) {
     // Das Bild in einem JFrame anzeigen
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        JFrame frame = new JFrame("Angezeigtes Bild");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(width, height);
+    SwingUtilities.invokeLater(() -> {
+      JFrame frame = new JFrame("Angezeigtes Bild");
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      frame.setSize(width, height);
 
-        // Das Bild in einem JLabel anzeigen
-        JLabel label = new JLabel(new ImageIcon(bufferedImage));
-        frame.add(label);
+      // Das Bild in einem JLabel anzeigen
+      JLabel label = new JLabel(new ImageIcon(bufferedImage));
+      frame.add(label);
 
-        frame.pack();
-        frame.setVisible(true);
-      }
+      frame.pack();
+      frame.setVisible(true);
     });
-  }
-
-  @Override
-  protected void paintComponent(Graphics g) {
-    var g2d = (Graphics2D) g.create();
-    //Paint it on screen
-    g2d.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-    g2d.dispose();
   }
 
   private static Image getImageFromArray(int[] pixels, int width, int height) {

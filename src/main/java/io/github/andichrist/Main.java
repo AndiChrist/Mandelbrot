@@ -20,11 +20,11 @@ public class Main extends JPanel {
     // Breite und Höhe des Bildes
     int width = 800;
     int height = 800;
-    int maxIteration = 300;
+    int maxIteration = 150;
 
     Context context = new Context();
 
-    context.setStrategy(new Mandelbrot(width, height, maxIteration));
+    context.setStrategy(new Julia(width, height, maxIteration));
 
     var pic = context.compute();
     pic = filter(pic, maxIteration);
@@ -40,11 +40,11 @@ public class Main extends JPanel {
   }
 
   private static int[] filter(int[] pic, int maxIterations) {
-    new RainbowColor(pic, maxIterations);
+    var rainbowColor = new RainbowColor(maxIterations);
 
     var coloredImage = new int[pic.length];
     for (int i = 0; i < pic.length; i++) {
-      coloredImage[i] = RainbowColor.color(pic[i], maxIterations);
+      coloredImage[i] = rainbowColor.color(pic[i], maxIterations);
     }
 
     return coloredImage;
